@@ -7,7 +7,7 @@ VirtueVerse is an application that allows users to browse through Christian lite
 VirtueVerse was created as a part of a school project for my current Bachelor education. For my program, it is required to create a MVC application in Laravel (unless one already has worked with Laravel previously, which I haven't, sadly.).
 
 ## Project structure
-https://github.com/Lex-van-Os/VirtueVerse/blob/c91ba3218c27d07eb235330ef84158daf04b1d82/virtueverse-erd.drawio
+virtueverse-erd.drawio
 
 ## Installation
 To be added
