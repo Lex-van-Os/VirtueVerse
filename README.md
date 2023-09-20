@@ -11,3 +11,36 @@ VirtueVerse was created as a part of a school project for my current Bachelor ed
 
 ## Installation
 To be added
+
+## Connecting to a local database
+VirtueVerse makes use of a local postgres database for storing and transforming data.
+
+### Prerequisites
+Making use of a database, has the following prerequisites:
+- PostgreSQL installed
+- PHP installed
+- PHP installed configuration to make use of the PostgreSQL extension
+
+### Database configuration
+To connect to a locally defined database, you first have to create a PostgreSQL database, locally. This can be done with a tool like pgAdmin (comes with an installation of PostgreSQL when selected).
+
+When having created a local database, the .env file has to be modified to refer to your local database. The variables that have to be changed, are all the variables starting with 'DB_'. For example:
+
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE={example_database}
+DB_USERNAME={example_user}
+DB_PASSWORD={example_password}
+
+## Starting the application
+The application can be started using the command:
+<pre>
+```bash
+php artisan serve
+```
+</pre>
+
+## Validating a correct database connection
+A correct database connection can be validated by navigating to the following url:
+'<http://127.0.0.1:8000/test-database>'
