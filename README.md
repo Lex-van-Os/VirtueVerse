@@ -6,6 +6,18 @@ VirtueVerse is an application that allows users to browse through Christian lite
 
 VirtueVerse was created as a part of a school project for my current Bachelor education. For my program, it is required to create a MVC application in Laravel (unless one already has worked with Laravel previously, which I haven't, sadly.).
 
+### Open Library API
+
+#### Examples
+*Retrieval of a book*
+https://openlibrary.org/api/books?bibkeys=OLID:OL22589662M&format=json&jscmd=data
+
+*Searching through book records*
+https://openlibrary.org/search.json?q=screwtape%20letters&fields=title,first_publish_year,author_name,edition_key&limit=10&mode=everything
+
+*Searching through the works of a book*
+https://openlibrary.org/works/OL71072W/editions.json
+
 ## Project structure
 ![virtueverse-erd drawio](https://github.com/Lex-van-Os/VirtueVerse/assets/44748283/0e5b6736-a1e4-47da-8e1c-55d95342eca8)
 
