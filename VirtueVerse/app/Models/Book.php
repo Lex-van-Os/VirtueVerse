@@ -9,5 +9,17 @@ class Book extends Model
 {
     protected $table = 'books';
 
-    protected $fillable = ['title', 'pages', 'publication_year', 'language', 'description'];
+    use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'authour',
+        'publication_year',
+        'open_library_key',
+    ];
+
+    public function editions()
+    {
+        return $this->hasMany(BookEdition::class);
+    }
 }
