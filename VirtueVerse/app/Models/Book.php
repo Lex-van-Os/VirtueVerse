@@ -13,9 +13,12 @@ class Book extends Model
 
     protected $fillable = [
         'title',
-        'authour',
+        'author',
         'publication_year',
+        'description',
         'open_library_key',
+        'editions_key',
+        'author_id'
     ];
 
     public function editions()

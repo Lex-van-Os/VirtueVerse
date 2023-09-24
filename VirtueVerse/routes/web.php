@@ -17,13 +17,13 @@ use App\Http\Controllers\BookController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');;
 
 // Route::get('book/create', 'BookController@create')->name('book.create');
 Route::get('book/create', [BookController::class, 'create'])->name('book.create');
-Route::post('book', [BookController::class, 'store'])->name('book.store');
-Route::get('/book/search', [BookController::class, 'search'])->name('books.search');
-Route::get('book/getBookInfo', [BookController::class, 'getBookInfo'])->name('books.getBookInfo');
+Route::post('book/store', [BookController::class, 'store'])->name('book.store')->middleware('web');
+Route::get('/book/search', [BookController::class, 'search'])->name('book.search');
+Route::get('book/getBookInfo', [BookController::class, 'getBookInfo'])->name('book.getBookInfo');
 
 Route::get('/test-database', function () {
     try {

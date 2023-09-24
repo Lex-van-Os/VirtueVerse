@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use App\Http\Controllers\Controller;
 use App\ViewModels\BookResultViewModel;
 use Illuminate\Http\Request;
@@ -15,31 +16,70 @@ class BookController extends Controller
         return view('books.create');
     }
 
+    public function getWorksKey($openLibraryKey)
+    {
+        $response = Http::withOptions(['verify' => false])->get("https://openlibrary.org/books/$openLibraryKey.json");
+
+        if ($response->successful()) 
+        {
+            $bookData = $response->json();
+            $worksKey = $bookData['works'][0]['key']; // Assuming there's only one work, otherwise, you may iterate through the array
+            $worksKeyValue = null;
+
+            $replacePattern = '/\/works\/(\w+)/';
+
+            if (preg_match($replacePattern, $worksKey, $matches)) {
+                $worksKeyValue = $matches[1]; 
+            } 
+            
+            return $worksKeyValue;
+        }
+        else
+        {
+            $errorDetails = $response->json();
+            Log::error('API request failed: ' . json_encode($errorDetails));
+            return response()->json(['error' => "API request failed."], 500);
+        }
+
+    }
+
     public function store(Request $request)
     {
+        Log::info("Store method called");
+        Log::info($request);
+
         // Validate the incoming request data
         $request->validate([
             'title' => 'required|string|max:255',
-            'pages' => 'required|integer|min:1',
-            'publication_year' => 'required|integer|min:1000|max:9999',
-            'language' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'publication_year' => 'required|integer|max:9999',
             'description' => 'required|string',
         ]);
+
+        $openLibraryKey = $request->input('open-library-key');
+        $editionsKey = null;
+
+        if ($openLibraryKey != null)
+        {
+            $editionsKey = $this->getWorksKey($openLibraryKey);
+        }
+
+        Log::info($editionsKey);
+        Log::info("Creating book");
     
-        // Create a new book record in the database using the validated data
-        $book = new Book([
+        $book = Book::create([
             'title' => $request->input('title'),
-            'pages' => $request->input('pages'),
+            'author' => $request->input('author'),
             'publication_year' => $request->input('publication_year'),
-            'language' => $request->input('language'),
             'description' => $request->input('description'),
+            'open_library_key' => $request->input('open-library-key'),
+            'editions_key' => $editionsKey,
+            'author_id' => 1 // Placeholder value
         ]);
-    
-        // Save the new book record
-        $book->save();
-    
-        // Redirect to a success page or return a response as needed
-        return redirect()->route('book.index')->with('success', 'Book created successfully');
+        
+        Log::info("Store method finished");
+
+        return redirect()->route('home')->with('success', 'Book created successfully');
     }
 
     public function search(Request $request)
@@ -80,7 +120,6 @@ class BookController extends Controller
         if ($response->successful()) 
         {
             $bookData = $response->json();
-            Log::info($bookData);
 
             $title = $bookData["OLID:$olid"]["title"] ?? null;
             $author = $bookData["OLID:$olid"]["authors"][0]["name"] ?? null;
