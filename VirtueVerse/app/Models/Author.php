@@ -9,7 +9,13 @@ class Author extends Model
 {
     protected $table = 'authors';
 
-    protected $fillable = ['name', 'birthdate', 'nationality', 'biography', 'description'];
+    protected $fillable = [
+        'name', 
+        'birthdate', 
+        'nationality', 
+        'biography', 
+        'open_library_key' // Add open_library_key for author key, similar to Book
+    ];
 
     public function books()
     {

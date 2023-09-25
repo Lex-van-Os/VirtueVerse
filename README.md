@@ -18,6 +18,12 @@ https://openlibrary.org/search.json?q=screwtape%20letters&fields=title,first_pub
 *Searching through the works of a book*
 https://openlibrary.org/works/OL71072W/editions.json
 
+*Retrieval of an author*
+https://openlibrary.org/authors/OL31574A.json
+
+*Searching through author records*
+https://openlibrary.org/search/authors.json?q=C.S.Lewis&limit=10
+
 ## Project structure
 ![virtueverse-erd drawio](https://github.com/Lex-van-Os/VirtueVerse/assets/44748283/0e5b6736-a1e4-47da-8e1c-55d95342eca8)
 
