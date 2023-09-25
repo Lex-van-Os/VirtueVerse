@@ -1,5 +1,5 @@
-import './bootstrap';
 import axios from 'axios';
+import { spaceEncoder } from './shared/regexHelper';
 
 const queryInput = document.getElementById('search-query');
 const queryResults = document.getElementById('search-results');
@@ -107,8 +107,4 @@ function fillCreateFields(bookData) {
     document.getElementById('open-library-key').value = bookData.openLibraryKey;
     document.getElementById('author').value = bookData.author;
     document.getElementById('description').value = "";
-}
-
-function spaceEncoder(input) {
-    return input.replace(/ /g, '%20');
 }
