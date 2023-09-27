@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\Log;
 
 class BookController extends Controller
 {
+    public function catalogue()
+    {
+        // Retrieve a list of books from your database
+        $books = Book::all(); // Or any other query you need
+
+        // Pass the data to the view and load the "book_catalog" Blade view
+        return view('books.catalogue', ['books' => $books]);
+    }
+
     public function create()
     {
         return view('books.create');
