@@ -23,6 +23,12 @@ class BookController extends Controller
         return view('books.create');
     }
 
+    // Method for retrieving all books. Used for dropdown inside book edition creaet
+    public function getAllBooks()
+    {
+
+    }
+
     public function getWorksKey($openLibraryKey)
     {
         $response = Http::withOptions(['verify' => false])->get("https://openlibrary.org/books/$openLibraryKey.json");

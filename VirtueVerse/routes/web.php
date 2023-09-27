@@ -32,6 +32,11 @@ Route::post('author/store', [AuthorController::class, 'store'])->name('author.st
 Route::get('/author/search', [AuthorController::class, 'search'])->name('author.search');
 Route::get('author/getAuthorInfo', [AuthorController::class, 'getAuthorInfo'])->name('author.getAuthorInfo');
 
+Route::get('book-edition/create', [AuthorController::class, 'create'])->name('author.create');
+Route::post('book-edition/store', [AuthorController::class, 'store'])->name('author.store')->middleware('web');
+Route::get('/book-edition/search', [AuthorController::class, 'search'])->name('author.search');
+Route::get('book-edition/getAuthorInfo', [AuthorController::class, 'getAuthorInfo'])->name('author.getAuthorInfo');
+
 Route::get('/test-database', function () {
     try {
         DB::connection()->getPdo();
