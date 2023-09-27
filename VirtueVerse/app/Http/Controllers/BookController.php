@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Log;
 
 class BookController extends Controller
 {
+    public function catalogue()
+    {
+        $books = Book::all();
+
+        return view('books.catalogue', ['books' => $books]);
+    }
+
     public function create()
     {
         return view('books.create');
