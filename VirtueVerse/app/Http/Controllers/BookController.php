@@ -18,6 +18,15 @@ class BookController extends Controller
         return view('books.catalogue', ['books' => $books]);
     }
 
+    public function show($bookId)
+    {
+        $book = Book::findOrFail($bookId);
+
+        $author = $book->author;
+
+        return view('books.show', compact('book', 'author'));
+    }
+
     public function create()
     {
         return view('books.create');

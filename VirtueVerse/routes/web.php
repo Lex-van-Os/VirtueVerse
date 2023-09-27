@@ -23,6 +23,7 @@ Route::get('/', function () {
 // Route::get('book/create', 'BookController@create')->name('book.create');
 Route::get('book/create', [BookController::class, 'create'])->name('book.create');
 Route::get('book/catalogue', [BookController::class, 'catalogue'])->name('book.catalogue');
+Route::get('/book/{id}', [BookController::class, 'show'])->name('book.show');
 Route::post('book/store', [BookController::class, 'store'])->name('book.store')->middleware('web');
 Route::get('/book/search', [BookController::class, 'search'])->name('book.search');
 Route::get('book/getBookInfo', [BookController::class, 'getBookInfo'])->name('book.getBookInfo');
