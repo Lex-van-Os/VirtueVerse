@@ -13,3 +13,25 @@ export function parseDateString(dateString) {
       return null;
     }
 }
+
+export function parsePublishYear(dateString) {
+  try {
+    if (dateString == null) {
+      return null;
+    }
+    
+    const yearPattern = /\b\d{4}\b/;
+
+    const yearMatch = dateString.match(yearPattern);
+  
+    if (yearMatch && yearMatch.length > 0) {
+      return yearMatch[0]; 
+    } else {
+      return null; 
+    }
+  }
+  catch (error) {
+    console.log(error);
+    console.log(dateString);
+  }
+}

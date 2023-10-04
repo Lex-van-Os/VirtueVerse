@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Http\Controllers\Controller;
+use App\ViewModels\BookEditionResultViewModel;
 use App\ViewModels\BookResultViewModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -21,6 +22,24 @@ class BookController extends Controller
     public function create()
     {
         return view('books.create');
+    }
+
+    public function getBook(Request $request)
+    {
+        $id = $request->query('id'); // Retrieve the 'id' query parameter from the request
+    
+        // Check if 'id' is provided in the query parameters
+        if (!$id) {
+            return response()->json(['error' => 'Book ID is missing'], 400);
+        }
+    
+        $book = Book::find($id);
+    
+        if (!$book) {
+            return response()->json(['error' => 'Book not found'], 404);
+        }
+    
+        return response()->json(['book' => $book]);
     }
 
     public function getWorksKey($openLibraryKey)
@@ -110,6 +129,39 @@ class BookController extends Controller
             Log::error('API request failed: ' . json_encode($errorDetails));
             return response()->json(['error' => "API request failed."], 500);
         }
+    }
+
+    // Message is to be used in future re-worked book dropdown upon searching for a book edition
+    public function searchStoredBooks(Request $request)
+    {
+        $request->validate([
+            'query' => 'required|string',
+        ]);
+    
+        $query = $request->input('query');
+    
+        $queryResults = Book::with('author')
+            ->where('title', 'like', "%$query%")
+            ->take(10)
+            ->get();
+
+        $books = [];
+
+        foreach ($queryResults as $book) {
+            $resultViewModel = new BookEditionResultViewModel(
+                $title = $book->title,
+                $pages = $book->pages,
+                $language = $book->language,
+                $publicationYear = $book->publicationYear,
+                $isbn = $book->isbn,
+                $bookId = $book->id, // Assuming $book->id represents the bookId
+                $editionsKey = $book->editions_key
+            );
+        
+            $books[] = $book;
+        }
+    
+        return response()->json(['results' => $books]);
     }
 
     public function getBookInfo(Request $request)
