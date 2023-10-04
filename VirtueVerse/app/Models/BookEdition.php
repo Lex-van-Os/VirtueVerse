@@ -15,6 +15,7 @@ class BookEdition extends Model
         'title',
         'isbn',
         'language',
+        'publication_year',
         'book_id',
         'editions_key',
         'pages',

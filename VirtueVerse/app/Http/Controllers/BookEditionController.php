@@ -16,6 +16,60 @@ class BookEditionController extends Controller
         return view('book-editions.create');
     }
 
+    public function store(Request $request)
+    {
+        Log::info("Store method called");
+        Log::info($request);
+
+        // Validate the incoming request data
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'pages' => 'required|int',
+            'publication-year' => 'required|integer|max:9999',
+            'book-id' => 'required|integer'
+        ]);
+
+        Log::info("Creating book");
+    
+        $bookEdition = BookEdition::create([
+            'title' => $request->input('title'),
+            'isbn' => $request->input('isbn'),
+            'publication_year' => $request->input('publication-year'),
+            'language' => $request->input('language'),
+            'pages' => $request->input('pages'),
+            'book_id' => $request->input('book-id'),
+        ]);
+        
+        Log::info("Store method finished");
+
+        return redirect()->route('home')->with('success', 'Book edition created successfully');
+    }
+
+    public function search(Request $request)
+    {
+        
+    }
+
+    public function formatBookEditions($bookEditions)
+    {
+        $editions = [];
+
+        foreach ($bookEditions as $edition)
+        {
+            $resultViewModel = new BookEditionResultViewModel(
+                $title = $edition['title'],
+                $pages = $edition['number_of_pages'] ?? null,
+                $language = $edition['languages'][0]['key'] ?? null,
+                $publicationYear = $edition['publish_date'] ?? null,
+                $isbn = $edition['isbn_13'][0] ?? null,
+            );
+        
+            $editions[] = $resultViewModel;
+        }
+
+        return $editions;
+    }
+
     public function getBookEditions(Request $request)
     {
         $request->validate([
@@ -29,7 +83,9 @@ class BookEditionController extends Controller
         if ($response->successful()) 
         {
             $searchResults = $response->json();
-            return response()->json(['results' => $searchResults]);
+            $formattedResults = $this->formatBookEditions($searchResults['entries']);
+
+            return response()->json(['results' => $formattedResults]);
         }
         else
         {
