@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Author;
 use App\Http\Controllers\Controller;
 use App\ViewModels\BookEditionResultViewModel;
 use App\ViewModels\BookResultViewModel;
@@ -21,7 +22,8 @@ class BookController extends Controller
 
     public function create()
     {
-        return view('books.create');
+        $authors = Author::all();
+        return view('books.create', ['authors' => $authors]);
     }
 
     public function getBook(Request $request)
@@ -71,14 +73,11 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
-        Log::info("Store method called");
-        Log::info($request);
-
         // Validate the incoming request data
         $request->validate([
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
-            'publication_year' => 'required|integer|max:9999',
+            'publication-year' => 'required|integer|max:9999',
             'description' => 'required|string',
         ]);
 
@@ -89,22 +88,17 @@ class BookController extends Controller
         {
             $editionsKey = $this->getWorksKey($openLibraryKey);
         }
-
-        Log::info($editionsKey);
-        Log::info("Creating book");
     
         $book = Book::create([
             'title' => $request->input('title'),
             'author' => $request->input('author'),
-            'publication_year' => $request->input('publication_year'),
+            'publication_year' => $request->input('publication-year'),
             'description' => $request->input('description'),
             'open_library_key' => $request->input('open-library-key'),
             'editions_key' => $editionsKey,
-            'author_id' => 1 // Placeholder value
+            'author_id' => $request->input('author-id')
         ]);
         
-        Log::info("Store method finished");
-
         return redirect()->route('home')->with('success', 'Book created successfully');
     }
 

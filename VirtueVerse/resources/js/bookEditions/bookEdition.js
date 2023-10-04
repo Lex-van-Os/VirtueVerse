@@ -1,28 +1,79 @@
+import $ from 'jquery';
 import axios from 'axios';
 import { spaceEncoder, parseDateString, parsePublishYear } from '../shared/regexHelper';
+import 'selectize/dist/css/selectize.css';
+import 'selectize';
+import Vue from 'vue';
 
-const bookQueryInput = document.getElementById('book-search-query');
-const bookQueryResults = document.getElementById('book-search-results');
 const bookEditionQueryInput = document.getElementById('book-edition-search-query');
 const bookEditionQueryResults = document.getElementById('book-edition-search-results');
+let bookInput;
 let retrievedBooks;
 let retrievedBookEditions;
 let timeoutId = null;
+let editionsKey;
+
+$(document).ready(function () {
+    bookInput = $('#book'); // Replace with your input field ID
+
+    bookInput.selectize({
+        plugins: ['remove_button'],
+        delimiter: ',',
+        onChange: async function(id) {
+            setBookId(id);
+            var bookData = await getBookInfo(id);
+            fillBookCreateFields(bookData);
+            setBookEditionSearchStatus();
+        }
+    });
+});
 
 document.addEventListener('DOMContentLoaded', function () {
+    editionsKey = document.getElementById('editions-key');
+
+    const bookEditionDropdownContent = new Vue({
+        el: '#app',
+        data: {
+            showDropdown: false,
+            editions: [],
+            editionsKey: document.getElementById('editions-key').value,
+        },
+        methods: {
+            async getBookEditions() {
+                try {
+                    query = spaceEncoder(query)
+                    var editionsKeyvalue = editionsKey.value
+            
+                    const response = await axios.get(`/book-edition/getBookEditions?editionsKey=${editionsKeyvalue}`);
+            
+                    this.editions = response.data.results;
+                    console.log(this.editions)
+                
+                } catch (error) {
+                    console.log("Failed sending request")
+                    console.log(error.response);
+                    throw error; // Rethrow the error to handle it in the calling function
+                }
+            },
+        },
+        watch: {
+            'editionsKey': function(newVal) {
+                if (newVal) {
+                    this.getBookEditions(); // If the value is not empty, load editions
+                } else {
+                    this.showDropdown = false; // Hide the dropdown when the value is empty
+                }
+            },
+        },
+    })
+
     setBookEditionSearchStatus();
-    addSearchEventListener(bookQueryInput, bookQueryResults, handleBookInput);
     addSearchEventListener(bookEditionQueryInput, bookEditionQueryResults, handleBookEditionInput);
 });
 
 async function handleBookEditionInput(query) {
     retrievedBookEditions = await searchBookEditions(query);
     displayBookEditionSearchResults(retrievedBookEditions);
-}
-
-async function handleBookInput(query) {
-    retrievedBooks = await searchStoredBooks(query);
-    displaySearchResults(retrievedBooks);
 }
 
 function addSearchEventListener(inputElement, resultsElement, callback) {
@@ -46,46 +97,8 @@ function addSearchEventListener(inputElement, resultsElement, callback) {
     });
 }
 
-async function displaySearchResults(results) {
-    results.forEach(function (result) {
-        const listItem = document.createElement('li');
-        listItem.classList.add('p-2', 'border-b', 'hover:bg-gray-100', 'cursor-pointer');
-
-        listItem.dataset.bookId = result.id; // Book id to retrieve information with
-
-        const title = document.createElement('div');
-        title.classList.add('font-bold', 'text-lg', 'mb-1');
-        title.textContent = result.title;
-
-        const author = document.createElement('div');
-        author.classList.add('text-gray-600', 'text-sm', 'mb-1');
-        author.textContent = `Author: ${result.author.name}`;
-
-        const publicationYear = document.createElement('div');
-        publicationYear.classList.add('text-gray-600', 'text-sm');
-        publicationYear.textContent = `Publication Year: ${result.publication_year}`;
-
-        listItem.appendChild(title);
-        listItem.appendChild(author);
-        listItem.appendChild(publicationYear);
-
-        listItem.addEventListener('click', async function() {
-            bookQueryInput.value = result.title;
-            bookQueryResults.innerHTML = '';
-
-            var bookData = await getBookInfo(listItem.dataset.bookId);
-            fillBookCreateFields(bookData);
-            setBookEditionSearchStatus();
-        });
-
-        bookQueryResults.appendChild(listItem);
-    });
-}
-
 function setBookEditionSearchStatus() {
-    const editionsKey = document.getElementById('editions-key').value;
-
-    if (editionsKey) {
+    if (editionsKey.value) {
       // Enable the input field
       bookEditionQueryInput.removeAttribute('disabled');
       bookEditionQueryInput.classList.remove('bg-gray-200'); // Remove greyed-out style
@@ -164,9 +177,9 @@ async function searchStoredBooks(query) {
 async function searchBookEditions(query) {
     try {
         query = spaceEncoder(query)
-        var editionsKey = document.getElementById('editions-key').value;
+        var editionsKeyValue = editionsKey.value
 
-        const response = await axios.get(`/book-edition/getBookEditions?editionsKey=${editionsKey}`);
+        const response = await axios.get(`/book-edition/getBookEditions?editionsKey=${editionsKeyValue}`);
 
         const results = response.data.results;
         console.log(results)
@@ -194,7 +207,12 @@ async function getBookInfo(bookId) {
     }
 }
 
+function setBookId(bookId) {
+    document.getElementById('book-id').value = bookId;
+}
+
 function fillBookCreateFields(bookData) {
+    console.log(bookData);
     document.getElementById('book-id').value = bookData.id;
     // document.getElementById('book').value = bookData.title;
     document.getElementById('title').value = bookData.title;

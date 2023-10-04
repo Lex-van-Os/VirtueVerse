@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BookEdition;
+use App\Models\Book;
 use App\Http\Controllers\Controller;
 use App\ViewModels\BookEditionResultViewModel;
 use Illuminate\Http\Request;
@@ -13,7 +14,10 @@ class BookEditionController extends Controller
 {
     public function create()
     {
-        return view('book-editions.create');
+        $books = Book::all();
+        Log::info($books);
+
+        return view('book-editions.create', ['books' => $books]);
     }
 
     public function store(Request $request)
