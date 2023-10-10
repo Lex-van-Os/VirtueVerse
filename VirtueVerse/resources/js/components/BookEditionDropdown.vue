@@ -31,10 +31,12 @@
   
 
 <script>
-import { ref, watchEffect, watch, onMounted } from 'vue';
+import { testScript, logEditionsKey } from '../test';
+import { ref, watchEffect, watch, onMounted, defineExpose } from 'vue';
 
 export default {
   setup() {
+    const bookEditionDropdownRef = ref(null);
     const showDropdown = ref(false);
     const selectedEdition = ref('');
     const editions = ref([]);
@@ -51,18 +53,12 @@ export default {
       }
     }
 
+    const testFunction = ref(() => {
+      console.log('Function called from outside the component.');
+    });
+
     
     onMounted(() => {
-      console.log("Fooo");
-      setTimeout(() => {
-        console.log("foo");
-        logEditionsKey(editionsKeyNew)
-      }, "4000");
-    //   this.$nextTick(function () {
-
-    // // Code that will run only after the
-    // // entire view has been rendered
-    //   })
     })
 
     watch(editionsKeyNew, async (newVal) => {
@@ -84,6 +80,10 @@ export default {
       showDropdown.value = false;
     }
 
+    defineExpose({
+      testFunction
+    });
+
     return {
       showDropdown,
       editionsKeyNew,
@@ -91,6 +91,8 @@ export default {
       editions,
       toggleDropdown,
       selectEdition,
+      testFunction,
+      bookEditionDropdownRef
     };
   },
 };

@@ -3,24 +3,6 @@ import axios from 'axios';
 import { spaceEncoder, parseDateString, parsePublishYear } from '../shared/regexHelper';
 import 'selectize/dist/css/selectize.css';
 import 'selectize';
-import { createApp, ref } from 'vue';
-import BookEditionDropdown from '../components/BookEditionDropdown.vue' 
-
-// createApp({
-//     components: {
-//         BookEditionDropdown,
-//         HelloVue,
-//     }
-// }).mount('#app');
-
-function logEditionsKey(key) {
-    console.log(key);
-}
-
-function whatIsThis(test) {
-    console.log(test);
-}
-
 
 const bookEditionQueryInput = document.getElementById('book-edition-search-query');
 const bookEditionQueryResults = document.getElementById('book-edition-search-results');
@@ -208,8 +190,3 @@ function fillBookEditionCreateFields(bookEditionData) {
     document.getElementById('language').value = bookEditionData.language;
     document.getElementById('pages').value = bookEditionData.pages != null ? bookEditionData.pages : '';
 }
-
-const app = createApp({});
-app.component('book-edition-dropdown', BookEditionDropdown);
-
-const vm = app.mount('#app');

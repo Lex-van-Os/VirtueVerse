@@ -1,5 +1,4 @@
 <head>
-    @vite('resources/js/test.js')
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
     @vite('resources/js/bookEditions/bookEdition.js')
@@ -37,9 +36,6 @@
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="book-edition">
                     Book Edition
                 </label>
-                <div id="app">
-                    {{-- <book-edition-dropdown></book-edition-dropdown> --}}
-                </div>
             </div>
 
             <x-forms.text-input type="text" id="title" label="Title" name="title" placeholder="Title" /> 
