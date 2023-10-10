@@ -30,17 +30,26 @@
                       type="text"
                       id="book-edition-input"
                       placeholder="Search or select a book edition"
-                      class="border rounded py-2 px-3 w-full cursor-pointer"
+                      class="border rounded py-2 px-3 w-full cursor-pointer pr-10"
                     />
-                    <ul
-                      id="book-edition-dropdown"
-                      class="absolute left-0 mt-2 w-full bg-white border rounded shadow-md max-h-48 overflow-y-auto z-10"
-                    >
-                      <!-- List items for editions go here -->
-                      <!-- Example: -->
-                      <!-- <li class="p-2 border-b hover:bg-gray-100 cursor-pointer">Edition 1</li> -->
-                      <!-- <li class="p-2 border-b hover:bg-gray-100 cursor-pointer">Edition 2</li> -->
+                    <ul id="book-edition-dropdown" class="absolute left-0 mt-2 w-full bg-white border rounded shadow-md max-h-48 overflow-y-auto z-10 hidden">
                     </ul>
+                    <div id="dropdown-icon" class="absolute right-2 top-2 cursor-pointer">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        class="w-6 h-6"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </div>
                   </div>
             </div>
 
