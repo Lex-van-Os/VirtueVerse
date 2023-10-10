@@ -1,4 +1,5 @@
 <head>
+    @vite('resources/js/test.js')
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
     @vite('resources/js/bookEditions/bookEdition.js')
@@ -37,8 +38,7 @@
                     Book Edition
                 </label>
                 <div id="app">
-                    <input type="hidden" name="editions-key" id="editions-key" v-model="editionsKey">
-                    <book-edition-dropdown></book-edition-dropdown>
+                    {{-- <book-edition-dropdown></book-edition-dropdown> --}}
                 </div>
             </div>
 
@@ -49,6 +49,7 @@
             <x-forms.text-input type="text" id="language" label="Language" name="language" placeholder="Language" />
 
             <input type="hidden" name="book-id" id="book-id">
+            <input type="hidden" name="editions-key" id="editions-key" v-model="editionsKey">
         
             <div class="flex items-center justify-between">
                 <button

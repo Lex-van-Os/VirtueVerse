@@ -3,7 +3,24 @@ import axios from 'axios';
 import { spaceEncoder, parseDateString, parsePublishYear } from '../shared/regexHelper';
 import 'selectize/dist/css/selectize.css';
 import 'selectize';
-import Vue from 'vue';
+import { createApp, ref } from 'vue';
+import BookEditionDropdown from '../components/BookEditionDropdown.vue' 
+
+// createApp({
+//     components: {
+//         BookEditionDropdown,
+//         HelloVue,
+//     }
+// }).mount('#app');
+
+function logEditionsKey(key) {
+    console.log(key);
+}
+
+function whatIsThis(test) {
+    console.log(test);
+}
+
 
 const bookEditionQueryInput = document.getElementById('book-edition-search-query');
 const bookEditionQueryResults = document.getElementById('book-edition-search-results');
@@ -12,6 +29,13 @@ let retrievedBooks;
 let retrievedBookEditions;
 let timeoutId = null;
 let editionsKey;
+
+document.addEventListener('DOMContentLoaded', function () {
+    editionsKey = document.getElementById('editions-key');
+
+    setBookEditionSearchStatus();
+    addSearchEventListener(bookEditionQueryInput, bookEditionQueryResults, handleBookEditionInput);
+});
 
 $(document).ready(function () {
     bookInput = $('#book'); // Replace with your input field ID
@@ -26,49 +50,6 @@ $(document).ready(function () {
             setBookEditionSearchStatus();
         }
     });
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    editionsKey = document.getElementById('editions-key');
-
-    const bookEditionDropdownContent = new Vue({
-        el: '#app',
-        data: {
-            showDropdown: false,
-            editions: [],
-            editionsKey: document.getElementById('editions-key').value,
-        },
-        methods: {
-            async getBookEditions() {
-                try {
-                    query = spaceEncoder(query)
-                    var editionsKeyvalue = editionsKey.value
-            
-                    const response = await axios.get(`/book-edition/getBookEditions?editionsKey=${editionsKeyvalue}`);
-            
-                    this.editions = response.data.results;
-                    console.log(this.editions)
-                
-                } catch (error) {
-                    console.log("Failed sending request")
-                    console.log(error.response);
-                    throw error; // Rethrow the error to handle it in the calling function
-                }
-            },
-        },
-        watch: {
-            'editionsKey': function(newVal) {
-                if (newVal) {
-                    this.getBookEditions(); // If the value is not empty, load editions
-                } else {
-                    this.showDropdown = false; // Hide the dropdown when the value is empty
-                }
-            },
-        },
-    })
-
-    setBookEditionSearchStatus();
-    addSearchEventListener(bookEditionQueryInput, bookEditionQueryResults, handleBookEditionInput);
 });
 
 async function handleBookEditionInput(query) {
@@ -227,3 +208,8 @@ function fillBookEditionCreateFields(bookEditionData) {
     document.getElementById('language').value = bookEditionData.language;
     document.getElementById('pages').value = bookEditionData.pages != null ? bookEditionData.pages : '';
 }
+
+const app = createApp({});
+app.component('book-edition-dropdown', BookEditionDropdown);
+
+const vm = app.mount('#app');

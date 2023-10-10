@@ -1,7 +1,13 @@
-import { createApp } from 'vue' 
+import { createApp, ref } from 'vue' 
 import BookEditionDropdown from './components/BookEditionDropdown.vue' 
+import HelloVue from './components/HelloVue.vue';
 
-createApp({}) 
-    .component('book-edition-dropdown', BookEditionDropdown)
-    .mount('#app') 
- 
+const editionsKeyNew = ref(''); // Define editionsKey
+
+
+// createApp({
+//     components: {
+//         BookEditionDropdown,
+//         HelloVue,
+//     }
+// }).mount('#app');
