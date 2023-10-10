@@ -9,18 +9,6 @@
     <h1 class="text-3xl font-bold underline">Create book edition</h1>
 
     <div class="max-w-5xl p-4">
-        <div class="mb-4">
-            <input
-                type="text"
-                id="book-edition-search-query"
-                placeholder="Search for book edition"
-                class="border rounded py-2 px-3 w-full"
-            >
-            <ul
-                id="book-edition-search-results"
-                class="absolute left-0 mt-2 w-full bg-white border rounded shadow-md max-h-48 overflow-y-auto z-10"
-            ></ul>
-        </div>
 
         <!-- Book edition Creation Form -->
         <form action="{{ route('book-edition.store') }}" method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -36,6 +24,24 @@
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="book-edition">
                     Book Edition
                 </label>
+
+                <div class="relative">
+                    <input
+                      type="text"
+                      id="book-edition-input"
+                      placeholder="Search or select a book edition"
+                      class="border rounded py-2 px-3 w-full cursor-pointer"
+                    />
+                    <ul
+                      id="book-edition-dropdown"
+                      class="absolute left-0 mt-2 w-full bg-white border rounded shadow-md max-h-48 overflow-y-auto z-10"
+                    >
+                      <!-- List items for editions go here -->
+                      <!-- Example: -->
+                      <!-- <li class="p-2 border-b hover:bg-gray-100 cursor-pointer">Edition 1</li> -->
+                      <!-- <li class="p-2 border-b hover:bg-gray-100 cursor-pointer">Edition 2</li> -->
+                    </ul>
+                  </div>
             </div>
 
             <x-forms.text-input type="text" id="title" label="Title" name="title" placeholder="Title" /> 
