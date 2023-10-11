@@ -1,6 +1,7 @@
 <head>
     @vite('resources/css/app.css')
-    @vite('resources/js/app.js')
+    @vite('resources/css/customSelectize.css')
+    @vite('resources/js/books/book.js')
     @vite('resources/js/shared/regexHelper.js')
 </head>
 
@@ -34,41 +35,15 @@
                     </ul>
                 </div>
             @endif
-
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
-                    Title
-                </label>
-                <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="title" name="title" type="text" placeholder="Title">
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="author">
-                    Author
-                </label>
-                <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="author" name="author" type="text" placeholder="Author">
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="publication-year">
-                    Publication Year
-                </label>
-                <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="publication-year" name="publication_year" type="number" placeholder="Publication Year">
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
-                    Description
-                </label>
-                <textarea
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="description" name="description" placeholder="Description"></textarea>
-            </div>
+            
+            <x-forms.text-input type="text" id="title" label="Title" name="title" placeholder="Title" />
+            <x-forms.combobox-input id="author" name="author" label="Author" :models="$authors" idField="id" valueField="name"></x-forms.combobox-input>
+            <x-forms.text-input type="number" id="publication-year" label="Publication year" name="publication-year" placeholder="Publication year" />
+            <x-forms.textarea id="description" label="Description" name="description" placeholder="Description" />
 
             <input type="hidden" name="open-library-key" id="open-library-key">
+            <input type="hidden" name="author-id" id="author-id">
+
             <div class="flex items-center justify-between">
                 <button
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

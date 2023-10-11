@@ -1,29 +1,83 @@
+import $ from 'jquery';
 import axios from 'axios';
 import { spaceEncoder, parseDateString, parsePublishYear } from '../shared/regexHelper';
+import 'selectize/dist/css/selectize.css';
+import 'selectize';
 
-const bookQueryInput = document.getElementById('book-search-query');
-const bookQueryResults = document.getElementById('book-search-results');
-const bookEditionQueryInput = document.getElementById('book-edition-search-query');
-const bookEditionQueryResults = document.getElementById('book-edition-search-results');
-let retrievedBooks;
-let retrievedBookEditions;
+const bookEditionInput = document.getElementById('book-edition-input');
+const bookEditionDropdown = document.getElementById('book-edition-dropdown');
+let bookInput;
+let retrievedBookEditions = [];
+let dropdownVisible = false;
 let timeoutId = null;
+let editionsKey;
+let BookEditionSearchTimeout;
 
-document.addEventListener('DOMContentLoaded', function () {
-    setBookEditionSearchStatus();
-    addSearchEventListener(bookQueryInput, bookQueryResults, handleBookInput);
-    addSearchEventListener(bookEditionQueryInput, bookEditionQueryResults, handleBookEditionInput);
+bookEditionInput.addEventListener('click', toggleBookEditionDropdown);
+
+bookEditionInput.addEventListener('input', () => {
+    const searchText = bookEditionInput.value.trim();
+    clearTimeout(BookEditionSearchTimeout);
+  
+    BookEditionSearchTimeout = setTimeout(() => {
+        filterBookEditionItems(searchText);
+    }, 1000);
 });
 
-async function handleBookEditionInput(query) {
-    retrievedBookEditions = await searchBookEditions(query);
-    displayBookEditionSearchResults(retrievedBookEditions);
-}
+function filterBookEditionItems(searchText) {
+    const items = bookEditionDropdown.querySelectorAll('li');
+    items.forEach(item => {
+      const text = item.textContent.toLowerCase();
+      if (text.includes(searchText.toLowerCase())) {
+        item.style.display = 'block'; 
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
 
-async function handleBookInput(query) {
-    retrievedBooks = await searchStoredBooks(query);
-    displaySearchResults(retrievedBooks);
-}
+// Event listener to close dropdown when clicking outside
+document.addEventListener('click', (event) => {
+    const target = event.target;
+    console.log("Click");
+    if (dropdownVisible && target !== bookEditionInput && !bookEditionDropdown.contains(target)) {
+        console.log("Toggling");
+        toggleBookEditionDropdown();
+    }
+  });
+
+document.addEventListener('DOMContentLoaded', function () {
+    editionsKey = document.getElementById('editions-key');
+
+    // addSearchEventListener(bookEditionQueryInput, bookEditionQueryResults, handleBookEditionInput);
+    // addSearchEventListener(bookEditionInput, bookEditionDropdown, handleBookEditionInput);
+});
+
+$(document).ready(function () {
+    bookInput = $('#book'); // Replace with your input field ID
+
+    bookInput.selectize({
+        plugins: ['remove_button'],
+        delimiter: ',',
+        onChange: async function(id) {
+            setBookId(id);
+            var bookData = await getBookInfo(id);
+            fillBookCreateFields(bookData);
+
+            console.log(editionsKey.value);
+            if (editionsKey.value && editionsKey.value != "")
+            {
+                retrievedBookEditions = await searchBookEditions("Doesnt matter");
+                console.log(retrievedBookEditions);
+                populateBookEditionDropdown();
+            } else {
+                retrievedBookEditions = [];
+                bookEditionDropdown.innerHTML = "";
+            }
+
+        }
+    });
+});
 
 function addSearchEventListener(inputElement, resultsElement, callback) {
     inputElement.addEventListener('input', async function () {
@@ -46,76 +100,27 @@ function addSearchEventListener(inputElement, resultsElement, callback) {
     });
 }
 
-async function displaySearchResults(results) {
-    results.forEach(function (result) {
+function populateBookEditionDropdown() {
+    bookEditionDropdown.innerHTML = '';
+    retrievedBookEditions.forEach(edition => {
         const listItem = document.createElement('li');
         listItem.classList.add('p-2', 'border-b', 'hover:bg-gray-100', 'cursor-pointer');
 
-        listItem.dataset.bookId = result.id; // Book id to retrieve information with
-
-        const title = document.createElement('div');
-        title.classList.add('font-bold', 'text-lg', 'mb-1');
-        title.textContent = result.title;
-
-        const author = document.createElement('div');
-        author.classList.add('text-gray-600', 'text-sm', 'mb-1');
-        author.textContent = `Author: ${result.author.name}`;
-
-        const publicationYear = document.createElement('div');
-        publicationYear.classList.add('text-gray-600', 'text-sm');
-        publicationYear.textContent = `Publication Year: ${result.publication_year}`;
-
-        listItem.appendChild(title);
-        listItem.appendChild(author);
-        listItem.appendChild(publicationYear);
-
-        listItem.addEventListener('click', async function() {
-            bookQueryInput.value = result.title;
-            bookQueryResults.innerHTML = '';
-
-            var bookData = await getBookInfo(listItem.dataset.bookId);
-            fillBookCreateFields(bookData);
-            setBookEditionSearchStatus();
-        });
-
-        bookQueryResults.appendChild(listItem);
-    });
-}
-
-function setBookEditionSearchStatus() {
-    const editionsKey = document.getElementById('editions-key').value;
-
-    if (editionsKey) {
-      // Enable the input field
-      bookEditionQueryInput.removeAttribute('disabled');
-      bookEditionQueryInput.classList.remove('bg-gray-200'); // Remove greyed-out style
-    } else {
-      // Disable the input field
-      bookEditionQueryInput.setAttribute('disabled', 'true');
-      bookEditionQueryInput.classList.add('bg-gray-200'); // Add greyed-out style
-    }
-}
-
-function displayBookEditionSearchResults(results) {
-    results.forEach(function (result) {
-        const listItem = document.createElement('li');
-        listItem.classList.add('p-2', 'border-b', 'hover:bg-gray-100', 'cursor-pointer');
-
-        listItem.dataset.title = result.title;
-        listItem.dataset.isbn = result.isbn;
-        listItem.dataset.pages = result.pages;
-        listItem.dataset.language = result.language;
-        listItem.dataset.publication_year = parsePublishYear(result.publicationYear);
+        listItem.dataset.title = edition.title;
+        listItem.dataset.isbn = edition.isbn;
+        listItem.dataset.pages = edition.pages;
+        listItem.dataset.language = edition.language;
+        listItem.dataset.publication_year = parsePublishYear(edition.publicationYear);
 
         const title = document.createElement('div');
         title.classList.add('edition-title', 'font-bold', 'text-lg', 'mb-1');
-        title.textContent = result.title;
+        title.textContent = edition.title;
 
         const pages = document.createElement('div');
         pages.classList.add('edition-pages', 'text-gray-600', 'text-sm', 'mb-1');
 
-        if (result.pages) {
-            pages.textContent = `Total pages: ${result.pages}`;
+        if (edition.pages) {
+            pages.textContent = `Total pages: ${edition.pages}`;
         } else {
             pages.textContent = 'Total pages: unknown';
         }
@@ -123,8 +128,8 @@ function displayBookEditionSearchResults(results) {
         const isbnNumber = document.createElement('div');
         isbnNumber.classList.add('edition-isbn', 'text-gray-600', 'text-sm');
 
-        if (result.isbn) {
-            isbnNumber.textContent = `ISBN number: ${result.isbn}`;
+        if (edition.isbn) {
+            isbnNumber.textContent = `ISBN number: ${edition.isbn}`;
         } else {
             isbnNumber.textContent = `ISBN number: unknown`;
         }
@@ -133,43 +138,25 @@ function displayBookEditionSearchResults(results) {
         listItem.appendChild(pages);
         listItem.appendChild(isbnNumber);
 
-        listItem.addEventListener('click', async function() {
-            bookEditionQueryInput.value = result.title;
-            bookEditionQueryResults.innerHTML = '';
+        listItem.addEventListener('click', () => {
+            bookEditionInput.value = edition.title;
+            toggleBookEditionDropdown();
 
             fillBookEditionCreateFields(listItem.dataset);
         });
 
-        bookEditionQueryResults.appendChild(listItem);
+        bookEditionDropdown.appendChild(listItem);
     });
-}
-
-async function searchStoredBooks(query) {
-    try {
-        query = spaceEncoder(query) // Replace space with valid character
-        const response = await axios.get(`/book/searchStoredBooks?query=${query}`);
-
-        const results = response.data.results;
-        console.log(results)
-
-        return results;
-
-    } catch (error) {
-        console.log("Failed sending request")
-        console.log(error.response);
-        throw error; // Rethrow the error to handle it in the calling function
-    }
 }
 
 async function searchBookEditions(query) {
     try {
         query = spaceEncoder(query)
-        var editionsKey = document.getElementById('editions-key').value;
+        var editionsKeyValue = editionsKey.value
 
-        const response = await axios.get(`/book-edition/getBookEditions?editionsKey=${editionsKey}`);
+        const response = await axios.get(`/book-edition/getBookEditions?editionsKey=${editionsKeyValue}`);
 
         const results = response.data.results;
-        console.log(results)
 
         return results;
 
@@ -194,7 +181,21 @@ async function getBookInfo(bookId) {
     }
 }
 
+function setBookId(bookId) {
+    document.getElementById('book-id').value = bookId;
+}
+
+function toggleBookEditionDropdown() {
+    dropdownVisible = !dropdownVisible;
+    if (dropdownVisible) {
+      bookEditionDropdown.classList.remove('hidden');
+    } else {
+      bookEditionDropdown.classList.add('hidden');
+    }
+}
+
 function fillBookCreateFields(bookData) {
+    console.log(bookData);
     document.getElementById('book-id').value = bookData.id;
     // document.getElementById('book').value = bookData.title;
     document.getElementById('title').value = bookData.title;
