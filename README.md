@@ -24,6 +24,11 @@ https://openlibrary.org/authors/OL31574A.json
 *Searching through author records*
 https://openlibrary.org/search/authors.json?q=C.S.Lewis&limit=10
 
+### Books
+
+#### Description
+The book table serves as the base of this application. With the use of this application, users can create new books and have the possibility to create corresponding book editions. Books can both be created with manual input and through the Open Library API. Upon using the Open Library API to search through books and adding them, additional Open Library information is stored for easy creation of corresponding book editions.
+
 ## Project structure
 ![virtueverse-erd drawio](https://github.com/Lex-van-Os/VirtueVerse/assets/44748283/0e5b6736-a1e4-47da-8e1c-55d95342eca8)
 
