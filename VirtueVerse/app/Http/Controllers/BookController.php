@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Author;
 use App\Http\Controllers\Controller;
+use App\ViewModels\BookEditionResultViewModel;
 use App\ViewModels\BookResultViewModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -29,7 +31,26 @@ class BookController extends Controller
 
     public function create()
     {
-        return view('books.create');
+        $authors = Author::all();
+        return view('books.create', ['authors' => $authors]);
+    }
+
+    public function getBook(Request $request)
+    {
+        $id = $request->query('id'); // Retrieve the 'id' query parameter from the request
+    
+        // Check if 'id' is provided in the query parameters
+        if (!$id) {
+            return response()->json(['error' => 'Book ID is missing'], 400);
+        }
+    
+        $book = Book::find($id);
+    
+        if (!$book) {
+            return response()->json(['error' => 'Book not found'], 404);
+        }
+    
+        return response()->json(['book' => $book]);
     }
 
     public function getWorksKey($openLibraryKey)
@@ -61,14 +82,11 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
-        Log::info("Store method called");
-        Log::info($request);
-
         // Validate the incoming request data
         $request->validate([
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
-            'publication_year' => 'required|integer|max:9999',
+            'publication-year' => 'required|integer|max:9999',
             'description' => 'required|string',
         ]);
 
@@ -79,22 +97,17 @@ class BookController extends Controller
         {
             $editionsKey = $this->getWorksKey($openLibraryKey);
         }
-
-        Log::info($editionsKey);
-        Log::info("Creating book");
     
         $book = Book::create([
             'title' => $request->input('title'),
             'author' => $request->input('author'),
-            'publication_year' => $request->input('publication_year'),
+            'publication_year' => $request->input('publication-year'),
             'description' => $request->input('description'),
             'open_library_key' => $request->input('open-library-key'),
             'editions_key' => $editionsKey,
-            'author_id' => 1 // Placeholder value
+            'author_id' => $request->input('author-id')
         ]);
         
-        Log::info("Store method finished");
-
         return redirect()->route('home')->with('success', 'Book created successfully');
     }
 
@@ -119,6 +132,39 @@ class BookController extends Controller
             Log::error('API request failed: ' . json_encode($errorDetails));
             return response()->json(['error' => "API request failed."], 500);
         }
+    }
+
+    // Message is to be used in future re-worked book dropdown upon searching for a book edition
+    public function searchStoredBooks(Request $request)
+    {
+        $request->validate([
+            'query' => 'required|string',
+        ]);
+    
+        $query = $request->input('query');
+    
+        $queryResults = Book::with('author')
+            ->where('title', 'like', "%$query%")
+            ->take(10)
+            ->get();
+
+        $books = [];
+
+        foreach ($queryResults as $book) {
+            $resultViewModel = new BookEditionResultViewModel(
+                $title = $book->title,
+                $pages = $book->pages,
+                $language = $book->language,
+                $publicationYear = $book->publicationYear,
+                $isbn = $book->isbn,
+                $bookId = $book->id, // Assuming $book->id represents the bookId
+                $editionsKey = $book->editions_key
+            );
+        
+            $books[] = $book;
+        }
+    
+        return response()->json(['results' => $books]);
     }
 
     public function getBookInfo(Request $request)
