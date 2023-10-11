@@ -22,11 +22,12 @@ class BookController extends Controller
 
     public function show($bookId)
     {
-        $book = Book::findOrFail($bookId);
+        $book = Book::with('author')->findOrFail($bookId);
 
-        $author = $book->author;
+        Log::info("Show information:");
+        Log::info($book);
 
-        return view('books.show', compact('book', 'author'));
+        return view('books.show', compact('book'));
     }
 
     public function create()

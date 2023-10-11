@@ -13,7 +13,7 @@
             <img src="{{ asset('book-template.png') }}" alt="Book Cover" class="w-full">
             
             <div class="mt-4">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg mr-2">Create Book Edition</button>
+                <a href="{{ route('book-edition.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg mr-2">Create Book Edition</a>
                 <button class="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg">Create Study Traject</button>
             </div>
         </div>
@@ -22,7 +22,7 @@
         <div class="w-3/4 ml-8">
             <!-- Book Title -->
             <h1 class="text-4xl font-semibold mb-1">{{ $book->title }}</h1>
-            <p class="text-2xl font-normal text-gray-600 mb-8">{{ $book->author }}</p>
+            <p class="text-2xl font-normal text-gray-600 mb-8">{{ $book->author->name }}</p>
             <p class="mt-2">{{ $book->description }}</p>
             <div class="mt-4">
                 <p class="text-sm mb-2 text-gray-600">Original Publish Year: {{ $book->publication_year }}</p>
@@ -34,7 +34,8 @@
             <!-- Author details -->
             <div class="mt-8 border-t pt-4">
                 <h2 class="text-xl font-semibold">About the Author</h2>
-                <p class="text-lg font-medium text-gray-600">C.S. Lewis</p>
+                <p class="text-lg font-medium text-gray-600">{{ $book->author->name }}</p>
+                <p class="mt-2">{{ $book->author->biography }}</p>
                 <p class="mt-2">"Clive Staples Lewis was an Irish-born British novelist, academic, medievalist, literary critic, essayist, lay theologian and Christian apologist."</p>
             </div>
         </div>
