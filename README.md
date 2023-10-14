@@ -29,6 +29,15 @@ https://openlibrary.org/search/authors.json?q=C.S.Lewis&limit=10
 #### Description
 The book table serves as the base of this application. With the use of this application, users can create new books and have the possibility to create corresponding book editions. Books can both be created with manual input and through the Open Library API. Upon using the Open Library API to search through books and adding them, additional Open Library information is stored for easy creation of corresponding book editions.
 
+### User accounts
+
+#### Description
+In the application, users have the ability to create a user account. The ability to create and manage user accounts, is realised through the Laravel Breeze starter kit, with added user roles on top. Through the creation of an account, you have the possibility to create records inside of the application. These actions are authorized through user accounts
+
+#### User roles, authentication and authorization
+Through added user roles, extra authorization is added to the application. Admins have the ability to monitor all content and perform all actions, editors have the ability to create new records for (most) of the included entities, while users are mainly tied to functionality for creating book editions and studying trajectories.
+
+
 ## Project structure
 ![virtueverse-erd drawio](https://github.com/Lex-van-Os/VirtueVerse/assets/44748283/0e5b6736-a1e4-47da-8e1c-55d95342eca8)
 
