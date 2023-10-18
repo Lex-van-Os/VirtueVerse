@@ -27,7 +27,23 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+
+// Routes only accessible for admins
+Route::middleware(['auth', 'auth.roles:Admin'])->group(function () {
+    
+});
+
+// Routes accessible for editors and admins
+Route::middleware(['auth', 'auth.roles:Admin,Editor'])->group(function () {
+
+    // Author routes
+    Route::get('author/create', [AuthorController::class, 'create'])->name('author.create');
+    Route::post('author/store', [AuthorController::class, 'store'])->name('author.store')->middleware('web');
+});
+
+// Routes accessible for users with a user role
+Route::middleware(['auth', 'auth.roles:Admin,Editor,User'])->group(function () {
+
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -38,13 +54,12 @@ Route::middleware('auth')->group(function () {
     Route::post('book/store', [BookController::class, 'store'])->name('book.store')->middleware('web');
 
     // Author routes
-    Route::get('author/create', [AuthorController::class, 'create'])->name('author.create');
-    Route::post('author/store', [AuthorController::class, 'store'])->name('author.store')->middleware('web');
 
     // Book edition routes
     Route::get('book-edition/create', [BookEditionController::class, 'create'])->name('book-edition.create');
     Route::post('book-edition/store', [BookEditionController::class, 'store'])->name('book-edition.store')->middleware('web');
 });
+
 
 // Routes for registration
 require __DIR__.'/auth.php';

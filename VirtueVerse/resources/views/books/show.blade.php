@@ -15,8 +15,10 @@
         <img src="{{ asset('book-template.png') }}" alt="Book Cover" class="w-full">
         
         <div class="mt-4">
-            <a href="{{ route('book-edition.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg mr-2">Create Book Edition</a>
-            <button class="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg">Create Study Traject</button>
+            @if(Auth::user()->user_role_id === 1 || Auth::user()->user_role_id === 2)
+                <a href="{{ route('book-edition.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg mr-2">Create Book Edition</a>
+                <button class="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg">Create Study Traject</button>
+            @endif
         </div>
     </div>
 
