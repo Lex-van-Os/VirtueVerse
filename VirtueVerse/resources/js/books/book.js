@@ -4,23 +4,10 @@ import { spaceEncoder, parsePublishYear } from '../shared/regexHelper';
 import 'selectize/dist/css/selectize.css';
 import 'selectize';
 
-let authorInput;
 const queryInput = document.getElementById('search-query');
 const queryResults = document.getElementById('search-results');
 let retrievedBooks;
 let timeoutId = null;
-
-$(document).ready(function () {
-    authorInput = $('#author'); // Replace with your input field ID
-
-    authorInput.selectize({
-        plugins: ['remove_button'],
-        delimiter: ',',
-        onChange: function(id) {
-            setAuthorId(id);
-        }
-    });
-});
 
 document.addEventListener('DOMContentLoaded', function () {
     queryInput.addEventListener('input', async function () {
@@ -116,7 +103,7 @@ async function getBookInfo(olid) {
     }
 }
 
-function setAuthorId(authorId) {
+export function setAuthorId(authorId) {
     document.getElementById('author-id').value = authorId;
 }
 

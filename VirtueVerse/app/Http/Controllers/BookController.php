@@ -10,6 +10,7 @@ use App\ViewModels\BookResultViewModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
@@ -24,9 +25,6 @@ class BookController extends Controller
     {
         $book = Book::with('author')->findOrFail($bookId);
 
-        Log::info("Show information:");
-        Log::info($book);
-
         return view('books.show', compact('book'));
     }
 
@@ -34,6 +32,14 @@ class BookController extends Controller
     {
         $authors = Author::all();
         return view('books.create', ['authors' => $authors]);
+    }
+
+    public function edit($id)
+    {
+        $authors = Author::all();
+        $book = Book::with('author')->findOrFail($id);
+    
+        return view('books.edit', compact('book', 'authors'));
     }
 
     public function getBook(Request $request)
@@ -110,6 +116,37 @@ class BookController extends Controller
         ]);
         
         return redirect()->route('home')->with('success', 'Book created successfully');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $book = Book::findOrFail($id);
+
+        // Validate the incoming request data
+
+        $rules = [
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'publication-year' => 'required|integer|max:9999',
+            'description' => 'required|string',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+        
+        $book->title = $request->input('title');
+        $book->description = $request->input('description');
+        $book->author_id = $request->input('author-id');
+        $book->publication_year = $request->input('publication-year');
+
+        // Update the book with the new data
+        $book->update($request->all());
+
+        return redirect()->route('book.show', $book->id)->with('success', 'Book updated successfully');
     }
 
     public function search(Request $request)
