@@ -37,6 +37,29 @@ In the application, users have the ability to create a user account. The ability
 #### User roles, authentication and authorization
 Through added user roles, extra authorization is added to the application. Admins have the ability to monitor all content and perform all actions, editors have the ability to create new records for (most) of the included entities, while users are mainly tied to functionality for creating book editions and studying trajectories.
 
+## Authorization
+
+### Description
+Through project authorization, realised through user roles, certain actions are made available or prohibited. This is depending on the given role of the user.
+
+### Admin functionality
+- Full CRUD for authors
+- Full CRUD for books
+- Full CRUD for book editions
+- Full CRUD for users
+- Full CRUD for study trajectories
+
+### Editor functionality
+- Full CRUD for authors
+- Full CRUD for books
+- Full CRUD for book editions
+- Full CRUD for own study trajectories
+
+### 'User' functionality
+- CR for books, UD for self made books
+- CR for book editions, UD for self made book editions
+- Full CRUD for own study trajectories
+
 
 ## Project structure
 ![virtueverse-erd drawio](https://github.com/Lex-van-Os/VirtueVerse/assets/44748283/0e5b6736-a1e4-47da-8e1c-55d95342eca8)

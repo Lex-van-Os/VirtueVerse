@@ -15,20 +15,26 @@
             <div class="w-full lg:w-2/5 space-x-4 lg:space-x-8 flex items-center lg:justify-end">
                 <a href="/" class="text-black hover:underline">Home</a>
                 <a href="/book/catalogue" class="text-black hover:underline">Book Catalogue</a>
-                <div class="relative group">
-                    <button @click="isOpen = !isOpen" class="text-black hover:underline group">
-                        Create
-                    </button>
-                    <ul
-                        x-show="isOpen"
-                        @click.away="isOpen = false"
-                        class="absolute mt-2 w-48 sm:w-56 space-y-2 bg-zinc-100 text-gray-700 group-hover:block hidden"
-                    >
-                        <li><a href="/book/create" class="px-4 py-2">Create Book</a></li>
-                        <li><a href="/book-edition/create" class="px-4 py-2">Create Book Edition</a></li>
-                        <li><a href="/author/create" class="px-4 py-2">Create Author</a></li>
-                    </ul>
-                </div>
+
+                @if(Auth::check())
+                    <div class="relative group">
+                        <button @click="isOpen = !isOpen" class="text-black hover:underline group">
+                            Create
+                        </button>
+                        <ul
+                            x-show="isOpen"
+                            @click.away="isOpen = false"
+                            class="absolute mt-2 w-48 sm:w-56 space-y-2 bg-zinc-100 text-gray-700 group-hover:block hidden"
+                        >
+                            @if(Auth::check() && (Auth::user()->user_role_id === 1 || Auth::user()->user_role_id === 2))
+                                <li><a href="/author/create" class="px-4 py-2">Create Author</a></li>
+                            @endif
+                            <li><a href="/book/create" class="px-4 py-2">Create Book</a></li>
+                            <li><a href="/book-edition/create" class="px-4 py-2">Create Book Edition</a></li>
+                        </ul>
+                    </div>
+                @endif
+                
                 <div class="flex space-x-4">
                     @guest
                         <a href="{{ route('login') }}" class="text-black hover:underline">Login</a>
@@ -71,8 +77,14 @@
                         <div class="w-full md:w-1/2 lg:w-1/4 mb-6 lg:mb-0"> <!-- Adjusted class for Discover items -->
                             <h2 class="text-2xl font-semibold mb-4">Discover</h2>
                             <ul class="text-sm">
+                                @if(!Auth::check())
+                                    <li><a href="/author/create" class="hover:underline">Authors</a></li>
+                                @elseif(Auth::user()->user_role_id === 1 || Auth::user()->user_role_id === 2)
+                                    <li><a href="/author/create" class="hover:underline">Authors</a></li>
+                                @else
+                                    <li><a href="/author/create" class="text-gray-500" style="pointer-events: none;">Authors</a></li>
+                                @endif
                                 <li><a href="/book/catalogue" class="hover:underline">Books</a></li>
-                                <li><a href="/author/create" class="hover:underline">Authors</a></li>
                                 <li><a href="/book-edition/create" class="hover:underline">Book Editions</a></li>
                             </ul>
                         </div>
