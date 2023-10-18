@@ -64,13 +64,13 @@ Route::middleware(['auth', 'auth.roles:Admin,Editor,User'])->group(function () {
 // Routes for registration
 require __DIR__.'/auth.php';
 
-// Route::get('book/create', 'BookController@create')->name('book.create');
 Route::get('book/catalogue', [BookController::class, 'catalogue'])->name('book.catalogue');
-Route::get('/book/{id}', [BookController::class, 'show'])->name('book.show');
 Route::get('/book/search', [BookController::class, 'search'])->name('book.search');
 Route::get('book/searchStoredBooks', [BookController::class, 'searchStoredBooks'])->name('book.searchStoredBooks');
 Route::get('book/getBookInfo', [BookController::class, 'getBookInfo'])->name('book.getBookInfo');
 Route::get('book/getBook', [BookController::class, 'getBook'])->name('book.getBook');
+Route::get('/book/{id}', [BookController::class, 'show'])->name('book.show');
+Route::get('book/create', [BookController::class, 'create'])->name('book.create');
 
 Route::get('/author/search', [AuthorController::class, 'search'])->name('author.search');
 Route::get('author/getAuthorInfo', [AuthorController::class, 'getAuthorInfo'])->name('author.getAuthorInfo');
