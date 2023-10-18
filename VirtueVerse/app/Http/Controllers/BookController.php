@@ -117,13 +117,19 @@ class BookController extends Controller
         $request->validate([
             'query' => 'required|string',
         ]);
-    
+        
+        Log::info("Search query:");
+        Log::info($request->input('query'));
         $query = $request->input('query');
 
+        Log::info("Search query:");
+        Log::info("https://openlibrary.org/search.json?q=$query&fields=title,first_publish_year,author_name,edition_key&limit=10&mode=everything");
         $response = Http::withOptions(['verify' => false])->get("https://openlibrary.org/search.json?q=$query&fields=title,first_publish_year,author_name,edition_key&limit=10&mode=everything");
+        
 
         if ($response->successful()) 
         {
+            Log::info("Query successful");
             $searchResults = $response->json();
             return response()->json(['results' => $searchResults]);
         }

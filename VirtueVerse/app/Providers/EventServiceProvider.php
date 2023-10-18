@@ -2,10 +2,17 @@
 
 namespace App\Providers;
 
+use App\Models\Book;
+use App\Models\BookEdition;
+use App\Observers\BookEditionObserver;
+use App\Observers\BookObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use App\Models\Author;
+use App\Observers\AuthorObserver;
+use Illuminate\Database\Eloquent\Events\Creating;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -17,6 +24,15 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        AuthorCreating::class => [
+            AuthorObserver::class,
+        ],
+        BookEditionCreating::class => [
+            BookEditionObserver::class,
+        ],
+        BookCreating::class => [
+            BookObserver::class,
         ],
     ];
 

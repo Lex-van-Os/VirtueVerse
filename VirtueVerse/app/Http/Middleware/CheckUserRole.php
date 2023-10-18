@@ -16,8 +16,6 @@ class CheckUserRole
      */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        Log::info($roles);
-        Log::info(auth()->user()->userRole->name);
 
         if (in_array(auth()->user()->userRole->name, $roles)) {
             return $next($request);
