@@ -14,11 +14,16 @@
     <div class="w-1/4">
         <img src="{{ asset('book-template.png') }}" alt="Book Cover" class="w-full">
         
-        <div class="mt-4">
+        <div class="mt-4 flex flex-col space-y-4">
             @if(Auth::user()->user_role_id === 1 || Auth::user()->user_role_id === 2)
-                <a href="{{ route('book-edition.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg mr-2">Create Book Edition</a>
-                <button class="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg">Create Study Traject</button>
+                <a href="{{ route('book-edition.create') }}" class="text-center bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">Create Book Edition</a>
             @endif
+
+            @if(Auth::user()->user_role_id === 1 || Auth::user()->user_role_id === 2 || (Auth::user()->user_role_id === 3 && $book->created_by === Auth::user()->id))
+                <a href="{{ route('book.edit', $book->id) }}" class="text-center bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">Edit Book information</a>
+            @endif
+
+            <button class="text-center bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg">Create Study Traject</button>
         </div>
     </div>
 
@@ -40,7 +45,6 @@
             <h2 class="text-xl font-semibold">About the Author</h2>
             <p class="text-lg font-medium text-gray-600">{{ $book->author->name }}</p>
             <p class="mt-2">{{ $book->author->biography }}</p>
-            <p class="mt-2">"Clive Staples Lewis was an Irish-born British novelist, academic, medievalist, literary critic, essayist, lay theologian and Christian apologist."</p>
         </div>
     </div>
 </div>

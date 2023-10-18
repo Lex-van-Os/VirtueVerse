@@ -5,6 +5,7 @@
     @vite('resources/css/app.css')
     @vite('resources/css/customSelectize.css')
     @vite('resources/js/books/book.js')
+    @vite('resources/js/books/bookCombobox.js')
     @vite('resources/js/shared/regexHelper.js')
 </head>
 
@@ -37,13 +38,13 @@
         </div>
     @endif
     
-    <x-forms.text-input type="text" id="title" label="Title" name="title" placeholder="Title" />
+    <x-forms.text-input type="text" id="title" label="Title" name="title" placeholder="Title" value="{{ old('title') }}"/>
     <x-forms.combobox-input id="author" name="author" label="Author" :models="$authors" idField="id" valueField="name"></x-forms.combobox-input>
-    <x-forms.text-input type="number" id="publication-year" label="Publication year" name="publication-year" placeholder="Publication year" />
-    <x-forms.textarea id="description" label="Description" name="description" placeholder="Description" />
+    <x-forms.text-input type="number" id="publication-year" label="Publication year" name="publication-year" placeholder="Publication year" value="{{ old('publication-year') }}" />
+    <x-forms.textarea id="description" label="Description" name="description" placeholder="Description" value="{{ old('description') }}" />
 
-    <input type="hidden" name="open-library-key" id="open-library-key">
-    <input type="hidden" name="author-id" id="author-id">
+    <input type="hidden" name="open-library-key" id="open-library-key" value="{{ old('open-library-key') }}">
+    <input type="hidden" name="author-id" id="author-id" value="{{ old('author-id') }}">
 
     <div class="flex items-center justify-between">
         <button
