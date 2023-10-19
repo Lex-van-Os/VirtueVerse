@@ -23,7 +23,7 @@ class BookController extends Controller
 
     public function show($bookId)
     {
-        $book = Book::with('author')->findOrFail($bookId);
+        $book = Book::with('author', 'editions')->findOrFail($bookId);
 
         return view('books.show', compact('book'));
     }

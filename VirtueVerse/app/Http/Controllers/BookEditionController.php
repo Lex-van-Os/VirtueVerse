@@ -13,6 +13,17 @@ use Illuminate\Support\Facades\Validator;
 
 class BookEditionController extends Controller
 {
+    public function catalogue($bookId)
+    {
+        $bookEditions = BookEdition::with('book')
+        ->where('book_id', $bookId)
+        ->get();
+
+        $bookTitle = $bookEditions->isNotEmpty() ? $bookEditions->first()->book->title : '';
+
+        return view('book-editions.catalogue', compact('bookEditions', 'bookTitle'));
+    }
+
     public function create()
     {
         $books = Book::all();
