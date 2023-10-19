@@ -31,6 +31,7 @@
                             @endif
                             <li><a href="/book/create" class="px-4 py-2">Create Book</a></li>
                             <li><a href="/book-edition/create" class="px-4 py-2">Create Book Edition</a></li>
+                            <li><a href="/study-trajectory/create" class="px-4 py-2">Create Study Trajectory</a></li>
                         </ul>
                     </div>
                 @endif

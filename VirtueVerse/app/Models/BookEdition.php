@@ -32,4 +32,10 @@ class BookEdition extends Model
     public function book()
     {
         return $this->belongsTo(Book::class);
-    }}
+    }
+
+    public function studyTrajectories()
+    {
+        return $this->hasMany(StudyTrajectory::class, 'book_edition_id');
+    }
+}

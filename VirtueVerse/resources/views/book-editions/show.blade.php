@@ -14,8 +14,7 @@
         <img src="{{ asset('book-template.png') }}" alt="Book Cover" class="w-full">
         
         <div class="mt-4 flex flex-col space-y-4">
-            <button class="text-center bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg">Create Study Traject</button>
-
+            <a href="{{ route('study-trajectory.create', $bookEdition->id) }}" class="text-center bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg">Create Study Trajectory</a>
             <a href="{{ route('book.show', $bookEdition->book->id) }}" class="text-center bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">View book details</a>
 
             @if(Auth::user()->user_role_id === 1 || Auth::user()->user_role_id === 2 || (Auth::user()->user_role_id === 3 && $bookEdition->created_by === Auth::user()->id))
