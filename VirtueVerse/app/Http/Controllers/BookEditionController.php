@@ -29,6 +29,13 @@ class BookEditionController extends Controller
         return view('book-editions.edit', compact('bookEdition', 'books'));
     }
 
+    public function show($bookEditionId) 
+    {
+        $bookEdition = BookEdition::with('book.author')->findOrFail($bookEditionId);
+
+        return view('book-editions.show', compact('bookEdition'));
+    }
+
     public function store(Request $request)
     {
         Log::info("Store method called");
@@ -90,7 +97,7 @@ class BookEditionController extends Controller
 
         $bookEdition->update($request->all());
 
-        return redirect()->route('home')->with('success', 'Book edition updated successfully');
+        return redirect()->route('book-edition.show', $bookEdition->id)->with('success', 'Book updated successfully');
     }
 
     public function search(Request $request)

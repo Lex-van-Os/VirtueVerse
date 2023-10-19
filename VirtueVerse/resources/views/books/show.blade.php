@@ -34,7 +34,7 @@
         <p class="text-2xl font-normal text-gray-600 mb-8">{{ $book->author->name }}</p>
         <p class="mt-2">{{ $book->description }}</p>
         <div class="mt-4">
-            <p class="text-sm mb-2 text-gray-600">Original Publish Year: {{ $book->publication_year }}</p>
+            <p class="text-sm mb-2 text-gray-600">Original publication year: {{ $book->publication_year }}</p>
             @if ($book->open_library_key)
                 <p class="text-sm text-gray-600">Open Library Key: {{ $book->open_library_key }}</p>
             @endif
