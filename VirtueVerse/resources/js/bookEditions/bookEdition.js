@@ -5,24 +5,26 @@ import 'selectize/dist/css/selectize.css';
 import 'selectize';
 
 const bookEditionInput = document.getElementById('book-edition-input');
-const bookEditionDropdown = document.getElementById('book-edition-dropdown');
-let bookInput;
-let retrievedBookEditions = [];
+export const bookEditionDropdown = document.getElementById('book-edition-dropdown');
+export let retrievedBookEditions = [];
+export function modifyRetrievedbookEditions( newValue ) { retrievedBookEditions = newValue; }
 let dropdownVisible = false;
 let timeoutId = null;
-let editionsKey;
+export let editionsKey;
 let BookEditionSearchTimeout;
 
-bookEditionInput.addEventListener('click', toggleBookEditionDropdown);
+if (bookEditionDropdown !== null) {
+    bookEditionInput.addEventListener('click', toggleBookEditionDropdown);
 
-bookEditionInput.addEventListener('input', () => {
-    const searchText = bookEditionInput.value.trim();
-    clearTimeout(BookEditionSearchTimeout);
-  
-    BookEditionSearchTimeout = setTimeout(() => {
-        filterBookEditionItems(searchText);
-    }, 1000);
-});
+    bookEditionInput.addEventListener('input', () => {
+        const searchText = bookEditionInput.value.trim();
+        clearTimeout(BookEditionSearchTimeout);
+      
+        BookEditionSearchTimeout = setTimeout(() => {
+            filterBookEditionItems(searchText);
+        }, 1000);
+    });
+}
 
 function filterBookEditionItems(searchText) {
     const items = bookEditionDropdown.querySelectorAll('li');
@@ -53,32 +55,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // addSearchEventListener(bookEditionInput, bookEditionDropdown, handleBookEditionInput);
 });
 
-$(document).ready(function () {
-    bookInput = $('#book'); // Replace with your input field ID
-
-    bookInput.selectize({
-        plugins: ['remove_button'],
-        delimiter: ',',
-        onChange: async function(id) {
-            setBookId(id);
-            var bookData = await getBookInfo(id);
-            fillBookCreateFields(bookData);
-
-            console.log(editionsKey.value);
-            if (editionsKey.value && editionsKey.value != "")
-            {
-                retrievedBookEditions = await searchBookEditions("Doesnt matter");
-                console.log(retrievedBookEditions);
-                populateBookEditionDropdown();
-            } else {
-                retrievedBookEditions = [];
-                bookEditionDropdown.innerHTML = "";
-            }
-
-        }
-    });
-});
-
 function addSearchEventListener(inputElement, resultsElement, callback) {
     inputElement.addEventListener('input', async function () {
         const query = inputElement.value;
@@ -100,7 +76,7 @@ function addSearchEventListener(inputElement, resultsElement, callback) {
     });
 }
 
-function populateBookEditionDropdown() {
+export function populateBookEditionDropdown() {
     bookEditionDropdown.innerHTML = '';
     retrievedBookEditions.forEach(edition => {
         const listItem = document.createElement('li');
@@ -149,7 +125,7 @@ function populateBookEditionDropdown() {
     });
 }
 
-async function searchBookEditions(query) {
+export async function searchBookEditions(query) {
     try {
         query = spaceEncoder(query)
         var editionsKeyValue = editionsKey.value
@@ -167,7 +143,7 @@ async function searchBookEditions(query) {
     }
 }
 
-async function getBookInfo(bookId) {
+export async function getBookInfo(bookId) {
     try {
         const response = await axios.get(`/book/getBook?id=${bookId}`);
         
@@ -181,7 +157,7 @@ async function getBookInfo(bookId) {
     }
 }
 
-function setBookId(bookId) {
+export function setBookId(bookId) {
     document.getElementById('book-id').value = bookId;
 }
 
@@ -194,7 +170,7 @@ function toggleBookEditionDropdown() {
     }
 }
 
-function fillBookCreateFields(bookData) {
+export function fillBookCreateFields(bookData) {
     console.log(bookData);
     document.getElementById('book-id').value = bookData.id;
     // document.getElementById('book').value = bookData.title;

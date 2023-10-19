@@ -46,6 +46,8 @@ Route::middleware(['auth', 'auth.roles:Admin,Editor'])->group(function () {
 Route::middleware(['auth', 'can.edit.record'])->group(function () {
     Route::get('book/edit/{id}', [BookController::class, 'edit'])->name('book.edit');
     Route::put('book/{id}', [BookController::class, 'update'])->name('book.update');
+    Route::get('book-edition/edit/{id}', [BookEditionController::class, 'edit'])->name('book-edition.edit');
+    Route::put('book-edition/{id}', [BookEditionController::class, 'update'])->name('book-edition.update');
 });
 
 // Routes accessible for users with a user role
