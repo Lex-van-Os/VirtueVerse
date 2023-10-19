@@ -86,6 +86,7 @@ Route::get('author/getAuthorInfo', [AuthorController::class, 'getAuthorInfo'])->
 
 Route::get('/book-edition/search', [BookEditionController::class, 'search'])->name('book-edition.search');
 Route::get('/book-edition/getBookEditions', [BookEditionController::class, 'getBookEditions'])->name('book-edition.getBookEditions');
+Route::get('/book-edition/{id}', [BookEditionController::class, 'show'])->name('book-edition.show');
 
 Route::get('/test-database', function () {
     try {
