@@ -37,6 +37,11 @@ In the application, users have the ability to create a user account. The ability
 #### User roles, authentication and authorization
 Through added user roles, extra authorization is added to the application. Admins have the ability to monitor all content and perform all actions, editors have the ability to create new records for (most) of the included entities, while users are mainly tied to functionality for creating book editions and studying trajectories.
 
+### Study trajectories
+
+#### Description
+Study trajectories create the possibility for a user to use tools for support when studying a book. Through creating a book and book edition inside of VirtueVerse, users can start their own study trajectories for this given edition. Through this, users can set goals, retrieve automated to-do tasks for the given book and track their progress in certain tasks.
+
 ## Authorization
 
 ### Description

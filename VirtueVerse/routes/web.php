@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\StudyTrajectoryController;
 use App\Http\Controllers\ProfileController;
 
 /*
@@ -88,6 +89,9 @@ Route::get('/book-edition/search', [BookEditionController::class, 'search'])->na
 Route::get('/book-edition/getBookEditions', [BookEditionController::class, 'getBookEditions'])->name('book-edition.getBookEditions');
 Route::get('/book-edition/{id}', [BookEditionController::class, 'show'])->name('book-edition.show');
 Route::get('book-edition/catalogue/{id}', [BookEditionController::class, 'catalogue'])->name('book-edition.catalogue');
+
+Route::get('study-trajectory/create', [StudyTrajectoryController::class, 'create'])->name('study-trajectory.create');
+Route::post('study-trajectory/store', [StudyTrajectoryController::class, 'store'])->name('study-trajectory.store');
 
 Route::get('/test-database', function () {
     try {
