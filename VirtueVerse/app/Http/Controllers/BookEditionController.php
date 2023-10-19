@@ -9,6 +9,7 @@ use App\ViewModels\BookEditionResultViewModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class BookEditionController extends Controller
 {
@@ -18,6 +19,14 @@ class BookEditionController extends Controller
         Log::info($books);
 
         return view('book-editions.create', ['books' => $books]);
+    }
+
+    public function edit($id)
+    {
+        $bookEdition = BookEdition::findOrFail($id);
+        $books = Book::all();
+    
+        return view('book-editions.edit', compact('bookEdition', 'books'));
     }
 
     public function store(Request $request)
@@ -47,6 +56,41 @@ class BookEditionController extends Controller
         Log::info("Store method finished");
 
         return redirect()->route('home')->with('success', 'Book edition created successfully');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $bookEdition = BookEdition::findOrFail($id);
+
+        // Validate the incoming request data
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'pages' => 'required|int',
+            'publication-year' => 'required|integer|max:9999',
+            'book-id' => 'required|integer'
+        ]);
+
+        $rules = [
+            'title' => 'required|string|max:255',
+            'pages' => 'required|int',
+            'publication-year' => 'required|integer|max:9999',
+            'book-id' => 'required|integer'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+        
+        $bookEdition->title = $request->input('title');
+        $bookEdition->pages = $request->input('pages');
+        $bookEdition->book_id = $request->input('book-id');
+        $bookEdition->publication_year = $request->input('publication-year');
+
+        $bookEdition->update($request->all());
+
+        return redirect()->route('home')->with('success', 'Book edition updated successfully');
     }
 
     public function search(Request $request)
