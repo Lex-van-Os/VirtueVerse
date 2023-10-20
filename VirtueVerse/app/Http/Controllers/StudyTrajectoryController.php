@@ -17,6 +17,13 @@ class StudyTrajectoryController extends Controller
         return view('study-trajectories.create', compact('bookEditions'));
     }
 
+    public function show($studyTrajectoryId) 
+    {
+        $studyTrajectory = StudyTrajectory::with('bookEdition')->findOrFail($studyTrajectoryId);
+
+        return view('study-trajectories.show', compact('studyTrajectory'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -34,6 +41,17 @@ class StudyTrajectoryController extends Controller
         ]);
 
         return redirect()->route('home')->with('success', 'Study trajectory created successfully');
+    }
+
+    public function changeTrajectoryStatus($id, $active)
+    {
+        $studyTrajectory = StudyTrajectory::findOrFail($id);
+
+        $studyTrajectory->update(['active' => $active]);
+        
+        $studyTrajectory = StudyTrajectory::with('bookEdition')->findOrFail($id);
+    
+        return view('study-trajectories.show', compact('studyTrajectory'));
     }
 }
 
