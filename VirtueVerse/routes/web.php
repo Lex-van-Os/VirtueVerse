@@ -44,11 +44,16 @@ Route::middleware(['auth', 'auth.roles:Admin,Editor'])->group(function () {
     Route::put('book/{id}', [BookController::class, 'update'])->name('book.update');
 });
 
+Route::post('study-trajectory/store', [StudyTrajectoryController::class, 'store'])->name('study-trajectory.store');
+Route::get('study-trajectory/create', [StudyTrajectoryController::class, 'create'])->name('study-trajectory.create');
+
 Route::middleware(['auth', 'can.edit.record'])->group(function () {
     Route::get('book/edit/{id}', [BookController::class, 'edit'])->name('book.edit');
     Route::put('book/{id}', [BookController::class, 'update'])->name('book.update');
     Route::get('book-edition/edit/{id}', [BookEditionController::class, 'edit'])->name('book-edition.edit');
     Route::put('book-edition/{id}', [BookEditionController::class, 'update'])->name('book-edition.update');
+    Route::get('/study-trajectory/{id}', [StudyTrajectoryController::class, 'show'])->name('study-trajectory.show');
+    Route::put('/study-trajectory/{id}/{active}', [StudyTrajectoryController::class, 'changeTrajectoryStatus'])->name('study-trajectory.changeTrajectoryStatus');
 });
 
 // Routes accessible for users with a user role
@@ -89,9 +94,6 @@ Route::get('/book-edition/search', [BookEditionController::class, 'search'])->na
 Route::get('/book-edition/getBookEditions', [BookEditionController::class, 'getBookEditions'])->name('book-edition.getBookEditions');
 Route::get('/book-edition/{id}', [BookEditionController::class, 'show'])->name('book-edition.show');
 Route::get('book-edition/catalogue/{id}', [BookEditionController::class, 'catalogue'])->name('book-edition.catalogue');
-
-Route::get('study-trajectory/create', [StudyTrajectoryController::class, 'create'])->name('study-trajectory.create');
-Route::post('study-trajectory/store', [StudyTrajectoryController::class, 'store'])->name('study-trajectory.store');
 
 Route::get('/test-database', function () {
     try {

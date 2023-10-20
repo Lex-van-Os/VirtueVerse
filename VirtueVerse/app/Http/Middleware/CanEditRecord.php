@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\StudyTrajectory;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,6 +39,9 @@ class CanEditRecord
             } elseif (strcasecmp($segment, 'author') === 0) {
                 $routeType = 'author';
                 break;
+            } elseif (strcasecmp($segment, 'study-trajectory') === 0) {
+                $routeType = 'study-trajectory';
+                break;
             }
         }
 
@@ -55,6 +59,10 @@ class CanEditRecord
             case 'book-edition':
                 $modelName = 'BookEdition';
                 $record = BookEdition::find($request->route('id'));
+                break;
+            case 'study-trajectory':
+                $modelName = 'StudyTrajectory';
+                $record = StudyTrajectory::find($request->route('id'));
                 break;
             default:
                 Log::info("default handling");
