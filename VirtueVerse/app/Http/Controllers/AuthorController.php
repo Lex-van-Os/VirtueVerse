@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\ViewModels\AuthorResultViewModel;
+use App\ViewModels\FilterValueViewModel;
 use App\Models\Author;
 use Carbon\Carbon;
 
@@ -124,5 +125,15 @@ class AuthorController extends Controller
             Log::error('API request failed: ' . json_encode($errorDetails));
             return response()->json(['error' => "API request failed."], 500);
         }
+    }
+
+    public function getAuthorFilterValues(Request $request) {
+        $authors = Author::whereHas('books.editions')->get();
+
+        $authorFilterValues = $authors->map(function ($author) {
+            return new FilterValueViewModel($author->id, $author->name);
+        });
+
+        return response()->json(['authorFilterValues' => $authorFilterValues]);
     }
 }

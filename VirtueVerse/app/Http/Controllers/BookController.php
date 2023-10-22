@@ -7,6 +7,7 @@ use App\Models\Author;
 use App\Http\Controllers\Controller;
 use App\ViewModels\BookEditionResultViewModel;
 use App\ViewModels\BookResultViewModel;
+use App\ViewModels\FilterValueViewModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -188,7 +189,7 @@ class BookController extends Controller
         $query = $request->input('query');
     
         $queryResults = Book::with('author')
-            ->where('title', 'like', "%$query%")
+            ->where('title', 'ilike', "%$query%")
             ->take(10)
             ->get();
 
@@ -247,5 +248,15 @@ class BookController extends Controller
             Log::error('API request failed: ' . json_encode($errorDetails));
             return response()->json(['error' => "API request failed."], 500);
         }
+    }
+
+    public function getBookFilterValues(Request $request) {
+        $books = Book::whereHas('editions')->get();
+
+        $bookFilterValues = $books->map(function ($book) {
+            return new FilterValueViewModel($book->id, $book->title);
+        });
+
+        return response()->json(['bookFilterValues' => $bookFilterValues]);
     }
 }

@@ -84,16 +84,21 @@ Route::get('/book/search', [BookController::class, 'search'])->name('book.search
 Route::get('book/searchStoredBooks', [BookController::class, 'searchStoredBooks'])->name('book.searchStoredBooks');
 Route::get('book/getBookInfo', [BookController::class, 'getBookInfo'])->name('book.getBookInfo');
 Route::get('book/getBook', [BookController::class, 'getBook'])->name('book.getBook');
+Route::get('book/getBookFilterValues', [BookController::class, 'getBookFilterValues'])->name('book.getBookFilterValues');
 Route::get('/book/{id}', [BookController::class, 'show'])->name('book.show');
 Route::get('book/create', [BookController::class, 'create'])->name('book.create');
 
 Route::get('/author/search', [AuthorController::class, 'search'])->name('author.search');
 Route::get('author/getAuthorInfo', [AuthorController::class, 'getAuthorInfo'])->name('author.getAuthorInfo');
+Route::get('author/getAuthorFilterValues', [AuthorController::class, 'getAuthorFilterValues'])->name('author.getAuthorFilterValues');
 
 Route::get('/book-edition/search', [BookEditionController::class, 'search'])->name('book-edition.search');
 Route::get('/book-edition/getBookEditions', [BookEditionController::class, 'getBookEditions'])->name('book-edition.getBookEditions');
+Route::get('book-edition/catalogue', [BookEditionController::class, 'catalogue'])->name('book-edition.catalogue.all');
+Route::get('/book-edition/retrieveFilteredItems', [BookEditionController::class, 'retrieveFilteredItems'])->name('book-edition.retrieveFilteredItems');
 Route::get('/book-edition/{id}', [BookEditionController::class, 'show'])->name('book-edition.show');
 Route::get('book-edition/catalogue/{id}', [BookEditionController::class, 'catalogue'])->name('book-edition.catalogue');
+Route::get('/book-edition/getBookEditionById', [BookEditionController::class, 'getBookEditionById'])->name('book-edition.getBookEditionById');
 
 Route::get('/test-database', function () {
     try {

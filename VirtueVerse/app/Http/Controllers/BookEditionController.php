@@ -2,26 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Author;
 use App\Models\BookEdition;
 use App\Models\Book;
 use App\Http\Controllers\Controller;
 use App\ViewModels\BookEditionResultViewModel;
+use App\ViewModels\FilterValueViewModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
+
 class BookEditionController extends Controller
 {
-    public function catalogue($bookId)
+    public function catalogue($bookId =  null)
     {
-        $bookEditions = BookEdition::with('book')
-        ->where('book_id', $bookId)
-        ->get();
+        $bookEditions = $this->getCatalogueItems($bookId, null, null);
+        $books = Book::all();
+
+        $bookFilterValues = $books->map(function ($book) {
+            return new FilterValueViewModel($book->id, $book->title);
+        });
+
+        $authors = Author::all();
+
+        if (is_null($bookId)) 
+        {
+            $bookId = 0;
+        }
 
         $bookTitle = $bookEditions->isNotEmpty() ? $bookEditions->first()->book->title : '';
 
-        return view('book-editions.catalogue', compact('bookEditions', 'bookTitle'));
+        return view('book-editions.catalogue', compact('bookEditions', 'books', 'authors', 'bookId', 'bookTitle'));
     }
 
     public function create()
@@ -116,6 +129,49 @@ class BookEditionController extends Controller
         
     }
 
+    function getCatalogueItems($bookFilter = null, $authorFilter = null, $text = null)
+    {
+        $query = BookEdition::query();
+
+        if (!empty($bookFilter)) {
+            $query->where('book_id', $bookFilter);
+        }
+
+        if (!empty($authorFilter)) {
+            $query->whereHas('book.author', function ($subquery) use ($authorFilter) {
+                $subquery->where('id', $authorFilter);
+            });
+        }
+
+        if (!empty($text)) {
+            $query->where(function ($subquery) use ($text) {
+                $subquery->where('title', 'ilike', "%$text%")
+                    ->orWhere('pages', 'ilike', "%$text%")
+                    ->orWhere('isbn', 'ilike', "%$text%")
+                    ->orWhere('publication_year', 'ilike', "%$text%")
+                    ->orWhere('language', 'ilike', "%$text%");
+            });
+        }
+
+        $bookEditions = $query->get();
+
+        Log::info("Retrieved book editions");
+        Log::info($bookEditions);
+
+        return $bookEditions;
+    }
+
+    public function retrieveFilteredItems(Request $request)
+    {
+        $bookFilter = $request->input('book');
+        $authorFilter = $request->input('author');
+        $text = $request->input('book-edition');
+
+        $filteredBookEditions = $this->getCatalogueItems($bookFilter, $authorFilter, $text);
+
+        return response()->json(['results' => $filteredBookEditions]);
+    }
+
     public function formatBookEditions($bookEditions)
     {
         $editions = [];
@@ -159,5 +215,16 @@ class BookEditionController extends Controller
             Log::error('API request failed: ' . json_encode($errorDetails));
             return response()->json(['error' => "API request failed."], 500);
         }
+    }
+
+    public function getBookEditionById($id)
+    {
+        $bookEdition = BookEdition::find($id);
+    
+        if (!$bookEdition) {
+            return response()->json(['message' => 'Book edition not found'], 404);
+        }
+    
+        return response()->json(['bookEdition' => $bookEdition], 200);
     }
 }
