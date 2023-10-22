@@ -9,12 +9,13 @@
     <!-- Navbar -->
     <nav class="bg-zinc-300 p-4">
         <div class="container mx-auto flex flex-wrap justify-between items-center">
-            <div class="w-full lg:w-3/5 mb-4 lg:mb-0">
+            <div class="w-full lg:w-2/5 mb-4 lg:mb-0">
                 <a href="/" class="text-black text-2xl font-bold">VirtueVerse</a>
             </div>
-            <div class="w-full lg:w-2/5 space-x-4 lg:space-x-8 flex items-center lg:justify-end">
+            <div class="w-full lg:w-3/5 space-x-4 lg:space-x-8 flex items-center lg:justify-end">
                 <a href="/" class="text-black hover:underline">Home</a>
                 <a href="/book/catalogue" class="text-black hover:underline">Book Catalogue</a>
+                <a href="/book/catalogue" class="text-black hover:underline">Book Edition Catalogue</a>
 
                 @if(Auth::check())
                     <div class="relative group">
