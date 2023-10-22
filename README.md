@@ -29,6 +29,17 @@ https://openlibrary.org/search/authors.json?q=C.S.Lewis&limit=10
 #### Description
 The book table serves as the base of this application. With the use of this application, users can create new books and have the possibility to create corresponding book editions. Books can both be created with manual input and through the Open Library API. Upon using the Open Library API to search through books and adding them, additional Open Library information is stored for easy creation of corresponding book editions.
 
+#### Catalogue
+Through the book catalogue, users have the ability to quickly look through book information. Through filtering and text search, you can easily find your desired book.
+
+### Book editions
+
+#### Description
+To make it possible to store different types of editions / publications of a single book, the 'book editions' table is included in this project. This makes it easier for a user to start a study trajectory for his owned book. One book can have multiple different kinds of book editions, with different ISBN numbers, languages etc.
+
+#### Catalogue
+Like the book table, the book editions table also includes a catalogue in the functionality. This makes it easier for users to find their desired edition to start a study trajectory.
+
 ### User accounts
 
 #### Description
