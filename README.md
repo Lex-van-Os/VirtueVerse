@@ -115,3 +115,45 @@ php artisan serve
 ## Validating a correct database connection
 A correct database connection can be validated by navigating to the following url:
 '<http://127.0.0.1:8000/test-database>'
+
+## Deploying a Laravel Application Locally with Docker
+
+This guide will walk you through deploying your Laravel application using Docker on your local machine. Docker allows you to containerize your application, making it easy to manage and deploy.
+
+### Prerequisites
+
+Before you begin, ensure that you have the following prerequisites installed:
+
+1. **Docker**: Install Docker on your machine. You can download and install Docker Desktop from [Docker's official website](https://www.docker.com/products/docker-desktop).
+
+### Step 1: Prepare Your Laravel Application
+
+Make sure your Laravel application is ready for deployment. Ensure you have set up your database configuration, environment variables, and dependencies.
+
+### Step 2: Create a Docker Compose File
+
+Create a `docker-compose.yml` file at the root of your Laravel project. This file defines how your application and its dependencies will run in containers.
+
+### Step 3: Build and Run the Containers
+
+Open your terminal, navigate to the root directory of this project, and run the following command to build and run your Docker containers:
+
+```bash
+docker-compose up -d
+```
+
+This command will create the necessary containers and start them in the background.
+
+### Step 4: Access Your Laravel Application
+
+Once the containers are up and running, you can access VirtueVerse in your web browser by navigating to [http://localhost](http://localhost). With this, VirtueVerse is accessible locally
+
+### Step 5: Stopping and Removing Containers
+
+To stop and remove the containers, you can use the following command:
+
+```bash
+docker-compose down
+```
+
+This command will stop and remove the Docker containers.
