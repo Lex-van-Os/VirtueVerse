@@ -19,6 +19,7 @@
     "dependencies": {
         "jquery": "^3.7.1",
         "moment": "^2.29.4",
+        "sail": "^0.0.0",
         "selectize": "^0.12.6",
         "vue": "^3.3.4",
         "vue-loader": "^17.2.2"
