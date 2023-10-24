@@ -81,18 +81,17 @@ Through project authorization, realised through user roles, certain actions are 
 ![virtueverse-erd drawio](https://github.com/Lex-van-Os/VirtueVerse/assets/44748283/0e5b6736-a1e4-47da-8e1c-55d95342eca8)
 
 ## Installation
-To be added
 
-## Connecting to a local database
+### Connecting to a local database
 VirtueVerse makes use of a local postgres database for storing and transforming data.
 
-### Prerequisites
+#### Prerequisites
 Making use of a database, has the following prerequisites:
 - PostgreSQL installed
 - PHP installed
 - PHP installed configuration to make use of the PostgreSQL extension
 
-### Database configuration
+#### Database configuration
 To connect to a locally defined database, you first have to create a PostgreSQL database, locally. This can be done with a tool like pgAdmin (comes with an installation of PostgreSQL when selected).
 
 When having created a local database, the .env file has to be modified to refer to your local database. The variables that have to be changed, are all the variables starting with 'DB_'. For example:
@@ -104,13 +103,36 @@ DB_DATABASE={example_database}
 DB_USERNAME={example_user}
 DB_PASSWORD={example_password}
 
+### Running migrations
+After having successfully created the database, you can automatically add the corresponding tables with the following command:
+php artisan migrate
+
+### Running seeders
+Having added the tables, test data is to be inserted using the following command:
+php artisan db:seed
+
 ## Starting the application
-The application can be started using the command:
+To run the application, two processes have to be started in two seperate terminals. Both are to be executed in the project root folder:
+
+### Running the development server
+The following command starts the development server:
 <pre>
 ```bash
 php artisan serve
 ```
 </pre>
+
+
+### Running Vite
+The following command runs the project application builder; Vite:
+<pre>
+```bash
+npm run dev
+```
+</pre>
+
+
+
 
 ## Validating a correct database connection
 A correct database connection can be validated by navigating to the following url:
