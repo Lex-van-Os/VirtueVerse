@@ -19,13 +19,17 @@
             <a href="{{ route('book-edition.catalogue', $book->id) }}" class="text-center bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">View editions</a>
             @endif
 
-            @if(Auth::user()->user_role_id === 1 || Auth::user()->user_role_id === 2)
-                <a href="{{ route('book-edition.create') }}" class="text-center bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">Create Book Edition</a>
-            @endif
+            @auth
+                @if(Auth::user()->user_role_id === 1 || Auth::user()->user_role_id === 2)
+                    <a href="{{ route('book-edition.create') }}" class="text-center bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">Create Book Edition</a>
+                @endif
+            @endauth
 
-            @if(Auth::user()->user_role_id === 1 || Auth::user()->user_role_id === 2 || (Auth::user()->user_role_id === 3 && $book->created_by === Auth::user()->id))
-                <a href="{{ route('book.edit', $book->id) }}" class="text-center bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">Edit Book information</a>
-            @endif
+            @auth
+                @if(Auth::user()->user_role_id === 1 || Auth::user()->user_role_id === 2 || (Auth::user()->user_role_id === 3 && $book->created_by === Auth::user()->id))
+                    <a href="{{ route('book.edit', $book->id) }}" class="text-center bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">Edit Book information</a>
+                @endif
+            @endauth
 
         </div>
     </div>

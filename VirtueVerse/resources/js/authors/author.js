@@ -81,6 +81,7 @@ async function displayRetrievedAuthors(results) {
             queryResults.innerHTML = '';
 
             var authorData = await getAuthorInfo(listItem.dataset.olid);
+            authorData = formatAuthorData(authorData);
             fillAuthorCreateFields(authorData);
         });
 
@@ -103,13 +104,33 @@ async function getAuthorInfo(olid) {
     }
 }
 
-// Populate author creation form fields with retrieved author data
-function fillAuthorCreateFields(authorData) {
-    console.log(authorData);
-
+function formatAuthorData(authorData) {
     if (authorData.birthDate != null) {
         authorData.birthDate = parseDateString(authorData.birthDate);
     }
+
+    authorData.biography = extractAuthorBiography(authorData.biography);
+
+    return authorData
+}
+
+function extractAuthorBiography(biography) {
+    let returnBiography;
+
+    if (biography === null) {
+        returnBiography = "";
+    } else if (typeof biography === 'string') {
+        returnBiography = biography;
+    } else if (typeof biography === 'object' && biography.value) {
+        returnBiography = biography.value;
+    }
+
+    return returnBiography
+}
+
+// Populate author creation form fields with retrieved author data
+function fillAuthorCreateFields(authorData) {
+    console.log(authorData);
 
     // Populate your form fields with author information
     document.getElementById('name').value = authorData.name;

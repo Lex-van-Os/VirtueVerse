@@ -1,5 +1,1 @@
 /* Styling for selectize elements gets overwritten. Will have to find a solution to style combobox items later */
-
-.selectize-input input {
-    background-color: red;
-}
