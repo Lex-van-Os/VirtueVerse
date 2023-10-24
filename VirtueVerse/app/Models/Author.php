@@ -17,9 +17,16 @@ class Author extends Model
         'birthdate', 
         'nationality', 
         'biography', 
-        'open_library_key' // Add open_library_key for author key, similar to Book
+        'open_library_key'
     ];
 
+    /**
+     * The "booting" method of the model.
+     *
+     * This method is called when the model is bootstrapped, and it registers the AuthorObserver.
+     *
+     * @return void
+     */
     protected static function boot()
     {
         parent::boot();
@@ -27,6 +34,13 @@ class Author extends Model
         Author::observe(AuthorObserver::class);
     }
 
+    /**
+     * Define a one-to-many relationship with the Book model.
+     *
+     * This method defines a relationship where an author can have many books.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function books()
     {
         return $this->hasMany(Book::class);
