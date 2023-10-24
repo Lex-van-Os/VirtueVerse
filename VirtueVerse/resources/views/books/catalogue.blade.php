@@ -18,7 +18,7 @@
                 <h2 class="text-lg font-semibold mb-2">{{ $book->title }}</h2>
                 <p class="text-gray-600">{{ $book->author->name }}</p>
                 <p class="text-gray-400 italic mb-4">Original publication: {{ $book->publication_year }}</p>
-                <p class="text-gray-700">{{ $book->description }}</p>
+                <p class="text-gray-700">{{ Str::limit($book->description, 150) }}</p>
             </div>
             <div class="p-4 border-t border-gray-300">
                 @php

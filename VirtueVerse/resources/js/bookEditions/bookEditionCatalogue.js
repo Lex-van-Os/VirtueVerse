@@ -82,7 +82,11 @@ async function getAuthorFilterValues() {
 
 // Function for setting the initial book filter value, in case of navigation from details page
 function setInitialFilterValues() {
-    bookFilter.value = parseInt(document.getElementById("selected-book-id").value);
+    let selectedBookValue = parseInt(document.getElementById("selected-book-id").value);
+
+    if (selectedBookValue != "") {
+        bookFilter.value = selectedBookValue;
+    }
 }
 
 // Function to set book display based on user selection

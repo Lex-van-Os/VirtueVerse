@@ -15,7 +15,7 @@
             <div class="w-full lg:w-3/5 space-x-4 lg:space-x-8 flex items-center lg:justify-end">
                 <a href="/" class="text-black hover:underline">Home</a>
                 <a href="/book/catalogue" class="text-black hover:underline">Book Catalogue</a>
-                <a href="/book/catalogue" class="text-black hover:underline">Book Edition Catalogue</a>
+                <a href="/book-edition/catalogue" class="text-black hover:underline">Book Edition Catalogue</a>
 
                 @if(Auth::check())
                     <div class="relative group">
