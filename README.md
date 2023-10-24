@@ -112,12 +112,27 @@ Having added the tables, test data is to be inserted using the following command
 php artisan db:seed
 
 ## Starting the application
-The application can be started using the command:
+To run the application, two processes have to be started in two seperate terminals. Both are to be executed in the project root folder:
+
+### Running the development server
+The following command starts the development server:
 <pre>
 ```bash
 php artisan serve
 ```
 </pre>
+
+
+### Running Vite
+The following command runs the project application builder; Vite:
+<pre>
+```bash
+npm run dev
+```
+</pre>
+
+
+
 
 ## Validating a correct database connection
 A correct database connection can be validated by navigating to the following url:
