@@ -1,22 +1,28 @@
 import axios from 'axios';
 import { setFilterSelection, initializeFilter, filters, initializeSearch } from '../components/dataControl/filterControl';
 
+// DOM elements
+let bookFilter = document.getElementById('book-filter');
+const bookEditionContainer = document.getElementById("book-editions");
+
+// Global variables
 let bookFilterValues;
 let authorFilterValues;
 let templateBookImageSrc;
-let bookFilter = document.getElementById('book-filter');
-let authorFilter = document.getElementById('author-filter');
-let bookEditionInput = document.getElementById("book-edition-search");
-const bookEditionContainer = document.getElementById("book-editions");
 
 document.addEventListener('DOMContentLoaded', async function () {
+    // Retrieve and set template book image source
     templateBookImageSrc = retrieveTemplateBookImage();
+
+    // Fetch filter values for books and authors
     bookFilterValues = await getBookFilterValues();
     authorFilterValues = await getAuthorFilterValues();
 
+    // Set filter selections from filterControl.js file
     setFilterSelection('book-filter', bookFilterValues);
     setFilterSelection('author-filter', authorFilterValues);
 
+    // Initialize filter and search functionality through filterControl.js file
     initializeFilter('book-filter', getEditionCatalogueData);
     initializeFilter('author-filter', getEditionCatalogueData);
     initializeSearch('book-edition-search', getEditionCatalogueData);
@@ -24,6 +30,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     setInitialFilterValues();
 });
 
+// Function to retrieve the template book image source
 function retrieveTemplateBookImage() {
     const bookEditionCards = document.querySelectorAll('.book-edition-card'); // Use the appropriate selector
     let retrievedImagePath;
@@ -41,6 +48,7 @@ function retrieveTemplateBookImage() {
     return retrievedImagePath;
 }
 
+// Function to fetch book filter values
 async function getBookFilterValues() {
     try {
         const response = await axios.get(`/book/getBookFilterValues`);
@@ -56,6 +64,7 @@ async function getBookFilterValues() {
     }
 }
 
+// Function to fetch author filter values
 async function getAuthorFilterValues() {
     try {
         const response = await axios.get(`/author/getAuthorFilterValues`);
@@ -71,10 +80,12 @@ async function getAuthorFilterValues() {
     }
 }
 
+// Function for setting the initial book filter value, in case of navigation from details page
 function setInitialFilterValues() {
     bookFilter.value = parseInt(document.getElementById("selected-book-id").value);
 }
 
+// Function to set book display based on user selection
 function setDisplayBook(displayName) {
     const contentHeader = document.getElementById("book-display-name");
 
@@ -85,6 +96,7 @@ function setDisplayBook(displayName) {
     }
 }
 
+// Function to create a card for a book edition
 async function createBookEditionCard(bookEdition) {
     const { id, title, publication_year, isbn, pages, created_at } = bookEdition;
 
@@ -134,6 +146,7 @@ async function createBookEditionCard(bookEdition) {
     return card;
 }
 
+// Function to display book editions
 async function displayBookEditions(bookEditions) {
     bookEditionContainer.innerHTML = '';
     console.log(bookEditions);
@@ -146,6 +159,7 @@ async function displayBookEditions(bookEditions) {
     }
 }
 
+// Function to get information about the selected book
 export async function getSelectedBookInformation(bookId) {
     try {
         if(bookId != null) {
@@ -161,6 +175,7 @@ export async function getSelectedBookInformation(bookId) {
     }
 }
 
+// Function to retrieve and display edition catalog data based on filters, called through re-used filterControl JS file
 export async function getEditionCatalogueData(bookEditionFilters) {
 
     if (!("book-edition" in bookEditionFilters)) {

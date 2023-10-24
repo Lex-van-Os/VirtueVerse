@@ -26,9 +26,7 @@ class CanEditRecord
         $routeType = null;
         $segments = $request->segments();
 
-        Log::info("Handling edit route");
-        Log::info($user->id);
-
+        // Define which model to retrieve record for
         foreach ($segments as $segment) {
             if (strcasecmp($segment, 'book') === 0) {
                 $routeType = 'book';
@@ -45,8 +43,7 @@ class CanEditRecord
             }
         }
 
-        Log::info($routeType);
-
+        // Retrieve the given record for the route id
         switch ($routeType) {
             case 'author':
                 $modelName = 'Author';

@@ -19,7 +19,8 @@ class BookEditionResource extends JsonResource
             'pages' => $this->pages,
             'language' => $this->language,
             'isbn' => $this->isbn,
-            'bookId' => $this->id, // Assuming 'id' is the book's primary key
-            'editionsKey' => $this->editions_key, // Assuming this is the correct column name
-        ];    }
+            'bookId' => $this->id,
+            'editionsKey' => $this->editions_key, 
+        ];    
+    }
 }

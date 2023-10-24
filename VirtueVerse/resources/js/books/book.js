@@ -4,19 +4,24 @@ import { spaceEncoder, parsePublishYear } from '../shared/regexHelper';
 import 'selectize/dist/css/selectize.css';
 import 'selectize';
 
+// Get references to HTML elements
 const queryInput = document.getElementById('search-query');
 const queryResults = document.getElementById('search-results');
 let retrievedBooks;
 let timeoutId = null;
 
+// Event listener for DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function () {
+    // Add an event listener to the search input
     queryInput.addEventListener('input', async function () {
         const query = queryInput.value;
 
-        clearTimeout(timeoutId); // Clear any previous pending requests
+        // Clear any previous pending requests
+        clearTimeout(timeoutId);
         queryResults.innerHTML = '';
 
         if (query.length >= 3) {
+            // Set a timeout to perform the search
             timeoutId = setTimeout(async function() {
                 try {
                     retrievedBooks = await searchBooks(query);
@@ -28,12 +33,13 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             queryResults.innerHTML = '';
         }
-
     });
 });
 
+// Function to display search results
 async function displaySearchResults(results) {
     results.forEach(function (result) {
+        // Create list items for search results
         const listItem = document.createElement('li');
         listItem.classList.add('p-2', 'border-b', 'hover:bg-gray-100', 'cursor-pointer');
 
@@ -60,7 +66,7 @@ async function displaySearchResults(results) {
         listItem.appendChild(publicationYear);
 
         listItem.addEventListener('click', async function() {
-            console.log(listItem.dataset);
+            // Handle click event for a search result
             queryInput.value = result.title;
             queryResults.innerHTML = '';
 
@@ -72,9 +78,10 @@ async function displaySearchResults(results) {
     });
 }
 
+// Function to search for books
 async function searchBooks(query) {
     try {
-        query = spaceEncoder(query) // Replace space with valid character
+        query = spaceEncoder(query) // Replace space with a valid character
         debugger;
         const response = await axios.get(`/book/search?query=${query}`);
 
@@ -89,6 +96,7 @@ async function searchBooks(query) {
     }
 }
 
+// Function to get book information by OLID
 async function getBookInfo(olid) {
     try {
         const response = await axios.get(`/book/getBookInfo?olid=${olid}`);
@@ -103,10 +111,12 @@ async function getBookInfo(olid) {
     }
 }
 
+// Function to set author ID in the form
 export function setAuthorId(authorId) {
     document.getElementById('author-id').value = authorId;
 }
 
+// Function to fill form fields with book information
 function fillCreateFields(bookData) {
     console.log(bookData);
     // Populate your form fields with book information

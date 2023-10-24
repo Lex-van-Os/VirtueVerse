@@ -11,12 +11,23 @@ use Illuminate\Support\Facades\Validator;
 
 class StudyTrajectoryController extends Controller
 {
+    /**
+     * Show the form for creating a new study trajectory.
+     *
+     * @return \Illuminate\View\View
+     */
     public function create()
     {
         $bookEditions = BookEdition::all();
         return view('study-trajectories.create', compact('bookEditions'));
     }
 
+    /**
+     * Display the specified study trajectory.
+     *
+     * @param  int  $studyTrajectoryId
+     * @return \Illuminate\View\View
+     */
     public function show($studyTrajectoryId) 
     {
         $studyTrajectory = StudyTrajectory::with('bookEdition')->findOrFail($studyTrajectoryId);
@@ -24,6 +35,12 @@ class StudyTrajectoryController extends Controller
         return view('study-trajectories.show', compact('studyTrajectory'));
     }
 
+    /**
+     * Store a newly created study trajectory in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -43,6 +60,13 @@ class StudyTrajectoryController extends Controller
         return redirect()->route('home')->with('success', 'Study trajectory created successfully');
     }
 
+    /**
+     * Change the status of a study trajectory.
+     *
+     * @param  int  $id
+     * @param  boolean  $active
+     * @return \Illuminate\View\View
+     */
     public function changeTrajectoryStatus($id, $active)
     {
         $studyTrajectory = StudyTrajectory::findOrFail($id);

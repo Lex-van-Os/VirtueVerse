@@ -16,6 +16,12 @@ use Illuminate\Support\Facades\Validator;
 
 class BookEditionController extends Controller
 {
+    /**
+     * Display a listing of book editions in the catalogue.
+     *
+     * @param  int|null  $bookId
+     * @return \Illuminate\View\View
+     */
     public function catalogue($bookId =  null)
     {
         $bookEditions = $this->getCatalogueItems($bookId, null, null);
@@ -37,6 +43,11 @@ class BookEditionController extends Controller
         return view('book-editions.catalogue', compact('bookEditions', 'books', 'authors', 'bookId', 'bookTitle'));
     }
 
+    /**
+     * Show the form for creating a new book edition.
+     *
+     * @return \Illuminate\View\View
+     */
     public function create()
     {
         $books = Book::all();
@@ -45,6 +56,12 @@ class BookEditionController extends Controller
         return view('book-editions.create', ['books' => $books]);
     }
 
+    /**
+     * Show the form for editing an existing book edition.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
     public function edit($id)
     {
         $bookEdition = BookEdition::findOrFail($id);
@@ -53,6 +70,12 @@ class BookEditionController extends Controller
         return view('book-editions.edit', compact('bookEdition', 'books'));
     }
 
+    /**
+     * Display the specified book edition.
+     *
+     * @param  int  $bookEditionId
+     * @return \Illuminate\View\View
+     */
     public function show($bookEditionId) 
     {
         $bookEdition = BookEdition::with('book.author')->findOrFail($bookEditionId);
@@ -60,20 +83,20 @@ class BookEditionController extends Controller
         return view('book-editions.show', compact('bookEdition'));
     }
 
+    /**
+     * Store a newly created book edition in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
-        Log::info("Store method called");
-        Log::info($request);
-
-        // Validate the incoming request data
         $request->validate([
             'title' => 'required|string|max:255',
             'pages' => 'required|int',
             'publication-year' => 'required|integer|max:9999',
             'book-id' => 'required|integer'
         ]);
-
-        Log::info("Creating book");
     
         $bookEdition = BookEdition::create([
             'title' => $request->input('title'),
@@ -84,16 +107,20 @@ class BookEditionController extends Controller
             'book_id' => $request->input('book-id'),
         ]);
         
-        Log::info("Store method finished");
-
         return redirect()->route('home')->with('success', 'Book edition created successfully');
     }
 
+    /**
+     * Update the specified book edition in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request, $id)
     {
         $bookEdition = BookEdition::findOrFail($id);
 
-        // Validate the incoming request data
         $request->validate([
             'title' => 'required|string|max:255',
             'pages' => 'required|int',
@@ -124,25 +151,44 @@ class BookEditionController extends Controller
         return redirect()->route('book-edition.show', $bookEdition->id)->with('success', 'Book updated successfully');
     }
 
+    
+    /**
+     * Search for book editions using the OpenLibrary API.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function search(Request $request)
     {
         
     }
 
+    
+    /**
+     * Retrieve book editions from the database based on filters.
+     *
+     * @param  int|null  $bookFilter
+     * @param  int|null  $authorFilter
+     * @param  string|null  $text
+     * @return \Illuminate\Support\Collection
+     */
     function getCatalogueItems($bookFilter = null, $authorFilter = null, $text = null)
     {
         $query = BookEdition::query();
 
+        // Apply filter on book edition book id if given
         if (!empty($bookFilter)) {
             $query->where('book_id', $bookFilter);
         }
 
+        // Apply filter on book edition -> book -> author if given
         if (!empty($authorFilter)) {
             $query->whereHas('book.author', function ($subquery) use ($authorFilter) {
                 $subquery->where('id', $authorFilter);
             });
         }
 
+        // Apply filter on book edition fields through search, if given
         if (!empty($text)) {
             $query->where(function ($subquery) use ($text) {
                 $subquery->where('title', 'ilike', "%$text%")
@@ -155,12 +201,15 @@ class BookEditionController extends Controller
 
         $bookEditions = $query->get();
 
-        Log::info("Retrieved book editions");
-        Log::info($bookEditions);
-
         return $bookEditions;
     }
 
+    /**
+     * Retrieve filtered book editions based on filters.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function retrieveFilteredItems(Request $request)
     {
         $bookFilter = $request->input('book');
@@ -172,6 +221,12 @@ class BookEditionController extends Controller
         return response()->json(['results' => $filteredBookEditions]);
     }
 
+    /**
+     * Format book editions for display.
+     *
+     * @param  \Illuminate\Support\Collection  $bookEditions
+     * @return array
+     */
     public function formatBookEditions($bookEditions)
     {
         $editions = [];
@@ -192,6 +247,12 @@ class BookEditionController extends Controller
         return $editions;
     }
 
+    /**
+     * Get book editions from OpenLibrary by editions key.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getBookEditions(Request $request)
     {
         $request->validate([
@@ -217,6 +278,12 @@ class BookEditionController extends Controller
         }
     }
 
+    /**
+     * Get book edition by ID.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getBookEditionById($id)
     {
         $bookEdition = BookEdition::find($id);
