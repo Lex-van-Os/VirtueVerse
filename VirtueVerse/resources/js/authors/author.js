@@ -1,12 +1,17 @@
 import axios from 'axios';
 import { spaceEncoder, parseDateString } from '../shared/regexHelper';
 
+// DOM elements
 const queryInput = document.getElementById('search-query');
 const queryResults = document.getElementById('search-results');
-let retrievedBooks;
-let timeoutId = null;
 
+// Global variables
+let retrievedAuthors; // Used to set dropdown value
+let timeoutId = null; // Used for timeout 
+
+// Wait for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function () {
+    // Listen for input in the search query input field
     queryInput.addEventListener('input', async function () {
         const query = queryInput.value;
 
@@ -14,10 +19,11 @@ document.addEventListener('DOMContentLoaded', function () {
         queryResults.innerHTML = '';
 
         if (query.length >= 3) {
-            timeoutId = setTimeout(async function() {
+            // Delay the search to avoid excessive requests
+            timeoutId = setTimeout(async function () {
                 try {
-                    retrievedBooks = await searchAuthors(query);
-                    displayRetrievedAuthors(retrievedBooks);
+                    retrievedAuthors = await searchAuthors(query);
+                    displayRetrievedAuthors(retrievedAuthors);
                 } catch (error) {
                     console.error('Error:', error);
                 }
@@ -25,13 +31,13 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             queryResults.innerHTML = '';
         }
-
     });
 });
 
+// Search for authors based on the user's query
 async function searchAuthors(query) {
     try {
-        query = spaceEncoder(query) // Replace space with valid character
+        query = spaceEncoder(query) // Replace space with a valid character
         const response = await axios.get(`/author/search?query=${query}`);
 
         const results = response.data.results;
@@ -45,6 +51,7 @@ async function searchAuthors(query) {
     }
 }
 
+// Display the retrieved authors in the search results
 async function displayRetrievedAuthors(results) {
     results.forEach(function (result) {
         const listItem = document.createElement('li');
@@ -68,7 +75,7 @@ async function displayRetrievedAuthors(results) {
         listItem.appendChild(name);
         listItem.appendChild(birth_date);
 
-        listItem.addEventListener('click', async function() {
+        listItem.addEventListener('click', async function () {
             console.log(listItem.dataset);
             queryInput.value = result.name;
             queryResults.innerHTML = '';
@@ -81,10 +88,11 @@ async function displayRetrievedAuthors(results) {
     });
 }
 
+// Fetch detailed author information using Open Library identifier
 async function getAuthorInfo(olid) {
     try {
         const response = await axios.get(`/author/getAuthorInfo?olid=${olid}`);
-        
+
         const results = response.data.author;
 
         return results;
@@ -95,14 +103,15 @@ async function getAuthorInfo(olid) {
     }
 }
 
+// Populate author creation form fields with retrieved author data
 function fillAuthorCreateFields(authorData) {
     console.log(authorData);
 
     if (authorData.birthDate != null) {
-        authorData.birthDate = parseDateString(authorData.birthDate)
+        authorData.birthDate = parseDateString(authorData.birthDate);
     }
 
-    // Populate your form fields with book information
+    // Populate your form fields with author information
     document.getElementById('name').value = authorData.name;
     document.getElementById('birthdate').value = authorData.birthDate;
     document.getElementById('biography').value = authorData.biography;

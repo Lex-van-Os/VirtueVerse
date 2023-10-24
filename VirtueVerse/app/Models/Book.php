@@ -21,6 +21,13 @@ class Book extends Model
         'author_id'
     ];
 
+    /**
+     * The "booting" method of the model.
+     *
+     * This method is called when the model is bootstrapped, and it registers the BookObserver.
+     *
+     * @return void
+     */
     protected static function boot()
     {
         parent::boot();
@@ -28,11 +35,25 @@ class Book extends Model
         Book::observe(BookObserver::class);
     }
 
+    /**
+     * Define a many-to-one relationship with the Author model.
+     *
+     * This method defines a relationship where a book belongs to a single author.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function author()
     {
         return $this->belongsTo(Author::class, 'author_id');
     }
 
+    /**
+     * Define a one-to-many relationship with the BookEdition model.
+     *
+     * This method defines a relationship where a book can have many editions.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function editions()
     {
         return $this->hasMany(BookEdition::class);
