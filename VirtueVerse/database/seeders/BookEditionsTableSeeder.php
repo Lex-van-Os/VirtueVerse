@@ -19,7 +19,6 @@ class BookEditionsTableSeeder extends Seeder
             'language' => 'English',
             'publication_year' => 1912,
             'book_id' => 8, 
-            'editions_key' => '',
             'pages' => 683,
         ]);
 
@@ -29,7 +28,6 @@ class BookEditionsTableSeeder extends Seeder
             'language' => 'English',
             'publication_year' => 1982,
             'book_id' => 1, 
-            'editions_key' => '',
             'pages' => 172,
         ]);
 
@@ -39,7 +37,6 @@ class BookEditionsTableSeeder extends Seeder
             'language' => 'English',
             'publication_year' => 2023,
             'book_id' => 1, 
-            'editions_key' => '',
             'pages' => 175,
         ]);
     }
