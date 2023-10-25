@@ -36,6 +36,18 @@ class StudyTrajectoryController extends Controller
     }
 
     /**
+     * Display a listing of all owned study trajectories.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function catalogue($userId)
+    {
+        $studyTrajectories = StudyTrajectory::where('created_by', $userId)->get();
+
+        return view('study-trajectories.catalogue', ['studyTrajectories' => $studyTrajectories]);
+    }
+
+    /**
      * Store a newly created study trajectory in storage.
      *
      * @param  \Illuminate\Http\Request  $request

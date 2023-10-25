@@ -53,6 +53,9 @@ Through added user roles, extra authorization is added to the application. Admin
 #### Description
 Study trajectories create the possibility for a user to use tools for support when studying a book. Through creating a book and book edition inside of VirtueVerse, users can start their own study trajectories for this given edition. Through this, users can set goals, retrieve automated to-do tasks for the given book and track their progress in certain tasks.
 
+#### Viewing trajectories
+Trajectories can be viewed by navigating to the profile page of your account. Here you can find a button for the study trajectory catalogue, which will display all your created study trajectories. This page is also accessible through the footer once logged in
+
 ## Authorization
 
 ### Description

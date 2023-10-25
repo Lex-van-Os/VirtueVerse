@@ -12,6 +12,24 @@
                     @include('profile.partials.update-profile-information-form')
                 </div>
             </div>
+            
+            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                <div class="max-w-xl">
+                    <section>
+                        <header class="space-y-6">
+                            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                                Study trajectories
+                            </h2>
+                    
+                            <div class="flex items-center gap-4">
+                                <x-primary-button href="{{ route('study-trajectory.catalogue', $user->id) }}">
+                                    {{ __('View my study trajectories') }}
+                                </x-primary-button>
+                            </div>
+                        </header>
+                    </section>
+                </div>
+            </div>
 
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-xl">
