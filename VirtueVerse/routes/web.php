@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\BookEditionController;
+use App\Http\Controllers\StudyEntryController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\BookController;
@@ -74,6 +75,9 @@ Route::middleware(['auth', 'auth.roles:Admin,Editor,User'])->group(function () {
     // Book edition routes
     Route::get('book-edition/create', [BookEditionController::class, 'create'])->name('book-edition.create');
     Route::post('book-edition/store', [BookEditionController::class, 'store'])->name('book-edition.store')->middleware('web');
+
+    Route::get('study-entry/create/{study_trajectory_id}', [StudyEntryController::class, 'create'])->name('study-entry.create');
+    Route::post('study-entry/store', [StudyEntryController::class,'store'])->name('study-entry.store')->middleware('web');
 });
 
 

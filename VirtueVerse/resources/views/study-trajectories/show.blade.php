@@ -17,20 +17,21 @@
         <div class="mt-4 flex flex-col space-y-4">
             @if($studyTrajectory->created_by === Auth::user()->id)
                 @if ($studyTrajectory->active)
-                    <form method="POST" action="{{ route('study-trajectory.changeTrajectoryStatus', ['id' => $studyTrajectory->id, 'active' => 0]) }}">
+                    <form class="w-full" method="POST" action="{{ route('study-trajectory.changeTrajectoryStatus', ['id' => $studyTrajectory->id, 'active' => 0]) }}">
                         @csrf
                         @method('PUT')
-                        <button class="bg-red-500 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg">Pause Trajectory</button>
+                        <button class="w-full bg-red-500 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg">Pause Trajectory</button>
                     </form>
                 @else
-                    <form method="POST" action="{{ route('study-trajectory.changeTrajectoryStatus', ['id' => $studyTrajectory->id, 'active' => 1]) }}">
+                    <form class="w-full" method="POST" action="{{ route('study-trajectory.changeTrajectoryStatus', ['id' => $studyTrajectory->id, 'active' => 1]) }}">
                         @csrf
                         @method('PUT')
-                        <button class="bg-green-500 hover-bg-green-700 text-white font-medium py-2 px-4 rounded-lg">Resume Trajectory</button>
+                        <button class="w-full bg-green-500 hover-bg-green-700 text-white font-medium py-2 px-4 rounded-lg">Resume Trajectory</button>
                     </form>
                 @endif
             @endif
 
+            <a href="{{ route('study-entry.create', $studyTrajectory->id) }}" class="text-center bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">Add study entry</a>
         </div>
     </div>
 
