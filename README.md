@@ -56,6 +56,11 @@ Study trajectories create the possibility for a user to use tools for support wh
 #### Viewing trajectories
 Trajectories can be viewed by navigating to the profile page of your account. Here you can find a button for the study trajectory catalogue, which will display all your created study trajectories. This page is also accessible through the footer once logged in
 
+### Study entries
+
+#### Description
+Through study trajectories, a user can create study entries for the book edition he's created study trajectory for. Through study entries, it's possible to give information on the studying progress of a book (read pages, spent minutes, notes, glossaries etc.). Through this data, it's possible to gain insights provided by VirtueVerse.
+
 ## Authorization
 
 ### Description
