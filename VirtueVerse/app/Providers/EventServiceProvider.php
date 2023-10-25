@@ -6,6 +6,8 @@ use App\Models\Book;
 use App\Models\BookEdition;
 use App\Observers\BookEditionObserver;
 use App\Observers\BookObserver;
+use App\Observers\PagesEntryObserver;
+use App\Observers\StudyEntryObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -33,6 +35,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         BookCreating::class => [
             BookObserver::class,
+        ],
+        StudyEntryCreating::class => [
+            StudyEntryObserver::class,
+        ],
+        PagesEntryCreating::class => [
+            PagesEntryObserver::class,
         ],
     ];
 
