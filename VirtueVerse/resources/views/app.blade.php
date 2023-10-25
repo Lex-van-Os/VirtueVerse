@@ -108,13 +108,20 @@
                             @auth
                                 <ul class="text-sm">
                                     <li><a href="{{ route('profile.edit') }}" class="hover:underline">My Profile</a></li>
+                                    <li><a href="{{ route('study-trajectory.catalogue', Auth::user()->id) }}" class="hover:underline">My trajectories</a></li>                             
                                 </ul>
                             @endauth
                         </div>
                     </div>
                 </div>
                 <div class="footer-right w-full lg:w-1/5">
-                    <p class="text-sm text-center lg:text-right">© VirtueVerse. All Rights Reserved.</p>
+                    <p class="text-sm text-center lg:text-left">
+                        © VirtueVerse. All Rights Reserved.
+                    </p>
+                    <p class="text-sm text-center lg:text-left">
+                        Functionality made possible by
+                        <a href="https://openlibrary.org/" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">Open Library</a>
+                    </p>
                 </div>
             </div>
         </footer>
