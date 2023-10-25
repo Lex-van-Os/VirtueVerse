@@ -83,6 +83,7 @@ Route::get('book/catalogue', [BookController::class, 'catalogue'])->name('book.c
 Route::get('/book/search', [BookController::class, 'search'])->name('book.search');
 Route::get('book/searchStoredBooks', [BookController::class, 'searchStoredBooks'])->name('book.searchStoredBooks');
 Route::get('book/getBookInfo', [BookController::class, 'getBookInfo'])->name('book.getBookInfo');
+Route::get('book/getBookImage', [BookController::class, 'getBookImage'])->name('book.getBookImage');
 Route::get('book/getBook', [BookController::class, 'getBook'])->name('book.getBook');
 Route::get('book/getBookFilterValues', [BookController::class, 'getBookFilterValues'])->name('book.getBookFilterValues');
 Route::get('/book/{id}', [BookController::class, 'show'])->name('book.show');
@@ -92,6 +93,7 @@ Route::get('/author/search', [AuthorController::class, 'search'])->name('author.
 Route::get('author/getAuthorInfo', [AuthorController::class, 'getAuthorInfo'])->name('author.getAuthorInfo');
 Route::get('author/getAuthorFilterValues', [AuthorController::class, 'getAuthorFilterValues'])->name('author.getAuthorFilterValues');
 
+Route::get('/book-edition/getBookEditionImage', [BookEditionController::class, 'getBookEditionImage'])->name('book-edition.getBookEditionImage');
 Route::get('/book-edition/search', [BookEditionController::class, 'search'])->name('book-edition.search');
 Route::get('/book-edition/getBookEditions', [BookEditionController::class, 'getBookEditions'])->name('book-edition.getBookEditions');
 Route::get('book-edition/catalogue', [BookEditionController::class, 'catalogue'])->name('book-edition.catalogue.all');

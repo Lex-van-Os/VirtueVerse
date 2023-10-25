@@ -12,7 +12,7 @@
 
     <!-- Book image and actions -->
     <div class="w-1/4">
-        <img src="{{ asset('book-template.png') }}" alt="Book Cover" class="w-full">
+        <img src="{{ route('book.getBookImage', ['olid' => $book->editions_key]) }}" alt="Book Cover" class="w-full">
         
         <div class="mt-4 flex flex-col space-y-4">
             @if ($book->editions->isNotEmpty())
