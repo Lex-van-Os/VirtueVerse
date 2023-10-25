@@ -300,6 +300,37 @@ class BookController extends Controller
     }
 
     /**
+     * Get book image from Open Library based on the Open Library identifier
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getBookImage(Request $request)
+    {
+        $olid = $request->input('olid');
+
+        $response = Http::withOptions(['verify' => false])->get("https://covers.openlibrary.org/b/olid/$olid-L.jpg?default=false");
+
+        // If the API request returns a 404 response, serve the book template image
+        if ($response->status() == 404) {
+            return response()->file(public_path('book-template.png'));
+        }
+
+        if ($response->successful()) 
+        {
+            $imageData = $response->body();
+    
+            return response($imageData, 200)->header('Content-Type', 'image/jpeg');
+        }
+        else
+        {
+            $errorDetails = $response->json();
+            Log::error('API request failed: ' . json_encode($errorDetails));
+            return response()->json(['error' => "API request failed."], 500);
+        }
+    }
+
+    /**
      * Get book filter values for use in filtering.
      *
      * @param  \Illuminate\Http\Request  $request

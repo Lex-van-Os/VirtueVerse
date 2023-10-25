@@ -82,7 +82,6 @@ async function displaySearchResults(results) {
 async function searchBooks(query) {
     try {
         query = spaceEncoder(query) // Replace space with a valid character
-        debugger;
         const response = await axios.get(`/book/search?query=${query}`);
 
         const results = response.data.results.docs;

@@ -11,7 +11,7 @@
 <div class="flex justify-center mt-8">
 
     <div class="w-1/4">
-        <img src="{{ asset('book-template.png') }}" alt="Book Cover" class="w-full">
+        <img src="{{ route('book-edition.getBookEditionImage', ['isbn' => $bookEdition->isbn]) }}" alt="Book Edition cover" class="w-full">
         
         <div class="mt-4 flex flex-col space-y-4">
             @auth

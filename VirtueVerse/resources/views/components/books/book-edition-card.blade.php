@@ -1,5 +1,5 @@
 <a href="{{ route('book-edition.show', $bookEdition->id) }}" class="book-edition-card block bg-white rounded-lg shadow-md cursor-pointer">
-    <img src="{{ asset('book-template.png') }}" alt="{{ $bookEdition->title }}" class="w-full h-48 object-cover rounded-t-lg" />
+    <img src="{{ route('book-edition.getBookEditionImage', ['isbn' => $bookEdition->isbn]) }}" alt="{{ $bookEdition->title }}" class="w-full h-48 object-cover rounded-t-lg" />
     <div class="p-4">
         <h2 class="text-lg font-semibold mb-2">{{ $bookEdition->title }}</h2>
         <p class="text-gray-600">Publicated on: {{ $bookEdition->publication_year }}</p>
