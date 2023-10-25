@@ -59,4 +59,9 @@ class BookEdition extends Model
     {
         return $this->hasMany(StudyTrajectory::class, 'book_edition_id');
     }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }
