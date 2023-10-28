@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\BookEditionController;
 use App\Http\Controllers\StudyEntryController;
@@ -106,6 +107,9 @@ Route::get('/book-edition/retrieveFilteredItems', [BookEditionController::class,
 Route::get('/book-edition/{id}', [BookEditionController::class, 'show'])->name('book-edition.show');
 Route::get('book-edition/catalogue/{id}', [BookEditionController::class, 'catalogue'])->name('book-edition.catalogue');
 Route::get('/book-edition/getBookEditionById', [BookEditionController::class, 'getBookEditionById'])->name('book-edition.getBookEditionById');
+
+Route::get('register', [RegisterController::class, 'register'])->name('register');
+Route::post('register/store', [RegisterController::class, 'store'])->name('store');
 
 Route::get('/test-database', function () {
     try {
