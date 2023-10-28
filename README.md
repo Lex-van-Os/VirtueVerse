@@ -6,7 +6,11 @@ VirtueVerse is an application that allows users to browse through Christian lite
 
 VirtueVerse was created as a part of a school project for my current Bachelor education. For my program, it is required to create a MVC application in Laravel (unless one already has worked with Laravel previously, which I haven't, sadly.).
 
+### Assessor clarification
+Extra clarification on the application functionality regarding the requirements for the course 'Web Application Frameworks', can be found inside of the **AssessorClarification.md** file.
+
 ### Open Library API
+The application makes use of the `Open Library API` to help with the retrieval of book and author records. The functionality for invoking the API, is done through back-end controller methods.
 
 #### Examples
 *Retrieval of a book*
@@ -72,18 +76,20 @@ Through project authorization, realised through user roles, certain actions are 
 - Full CRUD for book editions
 - Full CRUD for users
 - Full CRUD for study trajectories
+- Full CRUD for study entries
 
 ### Editor functionality
 - Full CRUD for authors
 - Full CRUD for books
 - Full CRUD for book editions
 - Full CRUD for own study trajectories
+- Full CRUD for own study entries
 
 ### 'User' functionality
 - CR for books, UD for self made books
 - CR for book editions, UD for self made book editions
 - Full CRUD for own study trajectories
-
+- Full CRUD for own study entries
 
 ## Project structure
 ![virtueverse-erd drawio](https://github.com/Lex-van-Os/VirtueVerse/assets/44748283/0e5b6736-a1e4-47da-8e1c-55d95342eca8)
@@ -91,56 +97,64 @@ Through project authorization, realised through user roles, certain actions are 
 ## Installation
 
 ### Connecting to a local database
-VirtueVerse makes use of a local postgres database for storing and transforming data.
+VirtueVerse makes use of a local `postgres` database for storing and transforming data.
 
 #### Prerequisites
 Making use of a database, has the following prerequisites:
 - PostgreSQL installed
 - PHP installed
-- PHP installed configuration to make use of the PostgreSQL extension
+- PHP configuration to make use of the PostgreSQL extension
+- pgAdmin for database UI (recommended)
 
 #### Database configuration
-To connect to a locally defined database, you first have to create a PostgreSQL database, locally. This can be done with a tool like pgAdmin (comes with an installation of PostgreSQL when selected).
+To connect to a locally defined database, you first have to create a PostgreSQL database, locally. This can be done with a tool like `pgAdmin` (comes with an installation of PostgreSQL when selected).
 
-When having created a local database, the .env file has to be modified to refer to your local database. The variables that have to be changed, are all the variables starting with 'DB_'. For example:
+When having created a local database, the project `.env` file has to be modified to refer to your local database. The variables that have to be changed, are all the variables starting with `'DB_'.` For example:
 
+```php
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
 DB_DATABASE={example_database}
 DB_USERNAME={example_user}
 DB_PASSWORD={example_password}
+```
+
+Make sure that the database, username and password match the database name and the defined database username and passwords respectively.
+
+### Correct folder
+When executing the following commands, and also all other commands regarding terminal actions, make sure that you have firstly navigated to the **VirtueVerse** project folder. For example:
+
+```markdown
+C:\CMGT\CMI\Virtue Verse\VirtueVerse
+```
 
 ### Running migrations
 After having successfully created the database, you can automatically add the corresponding tables with the following command:
+```bash
 php artisan migrate
+```
 
 ### Running seeders
 Having added the tables, test data is to be inserted using the following command:
+```bash
 php artisan db:seed
+```
 
 ## Starting the application
-To run the application, two processes have to be started in two seperate terminals. Both are to be executed in the project root folder:
+To run the application, two processes have to be started in two seperate terminals. Both are to be executed in the project root folder (**/VirtueVerse**):
 
 ### Running the development server
 The following command starts the development server:
-<pre>
 ```bash
 php artisan serve
 ```
-</pre>
-
 
 ### Running Vite
 The following command runs the project application builder; Vite:
-<pre>
 ```bash
 npm run dev
 ```
-</pre>
-
-
-
 
 ## Validating a correct database connection
 A correct database connection can be validated by navigating to the following url:
