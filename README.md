@@ -109,7 +109,7 @@ Making use of a database, has the following prerequisites:
 #### Database configuration
 To connect to a locally defined database, you first have to create a PostgreSQL database, locally. This can be done with a tool like `pgAdmin` (comes with an installation of PostgreSQL when selected).
 
-When having created a local database, the project `.env` file has to be modified to refer to your local database. The variables that have to be changed, are all the variables starting with `'DB_'.` For example:
+When having created a local database, you should create a `.env` file based on the `.env.example` file. This file should be created in the same location as the example file. The `.env` file has to be modified to refer to your local database. The variables that have to be changed, are all the variables starting with `'DB_'.` For example:
 
 ```php
 DB_CONNECTION=pgsql
@@ -128,6 +128,23 @@ When executing the following commands, and also all other commands regarding ter
 ```markdown
 C:\CMGT\CMI\Virtue Verse\VirtueVerse
 ```
+
+### Installing Laravel packages
+After having done the correct configuration, you should install the necessary project libraries using the command:
+
+```bash
+composer install
+```
+
+### Installing npm packages
+To make compilation via Vite possible, npm packages should also be installed:
+
+```bash
+npm install
+```
+
+#### Troubleshooting installation errors
+Sometimes the program may give installation errors during the installation of the necessary libraries. In this case, please attempt deleting the vendor folder and running the above mentioned command again.
 
 ### Running migrations
 After having successfully created the database, you can automatically add the corresponding tables with the following command:
