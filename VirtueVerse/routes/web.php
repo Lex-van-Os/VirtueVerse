@@ -64,6 +64,7 @@ Route::middleware(['auth', 'auth.roles:Admin,Editor,User'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::patch('/profile/applyForEditor', [ProfileController::class, 'applyForEditor'])->name('profile.applyForEditor');
 
     // Book routes
     Route::get('book/create', [BookController::class, 'create'])->name('book.create');

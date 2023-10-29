@@ -11,13 +11,31 @@ use Illuminate\View\View;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\EditorRoleController;
 
 class ProfileController extends Controller
 {
     public function edit(Request $request): View
     {
+        $editorRoleController = new EditorRoleController();
+
+        $displayEditorButton = false;
+        $hasApplied = $editorRoleController->checkEditorApplication($request->user()->id);
+        $counts = $editorRoleController->checkCreatedRecords($request->user()->id);
+
+        $bookCount = $counts['books'];
+        $bookEditionsCount = $counts['bookEditions'];
+
+        $totalCount = $bookCount + $bookEditionsCount;
+
+        if (!$hasApplied && $totalCount >= 5) 
+        {
+            $displayEditorButton = true;
+        }
+
         return view('profile.edit', [
             'user' => $request->user(),
+            'displayEditorButton' => $displayEditorButton,
         ]);
     }
 
@@ -29,14 +47,12 @@ class ProfileController extends Controller
         ]);
 
         $request->user()->update($request->only(['name', 'email']));
-        Log::info("User updated");
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
     public function destroy(Request $request): RedirectResponse
     {
-        Log::info('Delete method called');
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
         ]);
@@ -51,5 +67,14 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function applyForEditor(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+        $user->appliedForEditor = true;
+        $user->save();
+
+        return redirect()->back()->with('success', 'You have successfully applied for editor.');
     }
 }

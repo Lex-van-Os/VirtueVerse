@@ -20,9 +20,7 @@
             @endif
 
             @auth
-                @if(Auth::user()->user_role_id === 1 || Auth::user()->user_role_id === 2)
-                    <a href="{{ route('book-edition.create') }}" class="text-center bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">Create Book Edition</a>
-                @endif
+                <a href="{{ route('book-edition.create') }}" class="text-center bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">Create Book Edition</a>
             @endauth
 
             @auth
