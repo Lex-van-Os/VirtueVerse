@@ -46,9 +46,6 @@ Route::middleware(['auth', 'auth.roles:Admin,Editor'])->group(function () {
     Route::put('book/{id}', [BookController::class, 'update'])->name('book.update');
 });
 
-Route::post('study-trajectory/store', [StudyTrajectoryController::class, 'store'])->name('study-trajectory.store');
-Route::get('study-trajectory/create', [StudyTrajectoryController::class, 'create'])->name('study-trajectory.create');
-
 Route::middleware(['auth', 'can.edit.record'])->group(function () {
     Route::get('book/edit/{id}', [BookController::class, 'edit'])->name('book.edit');
     Route::put('book/{id}', [BookController::class, 'update'])->name('book.update');
@@ -61,6 +58,10 @@ Route::middleware(['auth', 'can.edit.record'])->group(function () {
 
 // Routes accessible for users with a user role
 Route::middleware(['auth', 'auth.roles:Admin,Editor,User'])->group(function () {
+
+    // Study trajectory routes
+    Route::post('study-trajectory/store', [StudyTrajectoryController::class, 'store'])->name('study-trajectory.store');
+    Route::get('study-trajectory/create', [StudyTrajectoryController::class, 'create'])->name('study-trajectory.create');
 
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -93,7 +94,7 @@ Route::get('book/getBookImage', [BookController::class, 'getBookImage'])->name('
 Route::get('book/getBook', [BookController::class, 'getBook'])->name('book.getBook');
 Route::get('book/getBookFilterValues', [BookController::class, 'getBookFilterValues'])->name('book.getBookFilterValues');
 Route::get('/book/{id}', [BookController::class, 'show'])->name('book.show');
-Route::get('book/create', [BookController::class, 'create'])->name('book.create');
+// Route::get('book/create', [BookController::class, 'create'])->name('book.create');
 
 Route::get('/author/search', [AuthorController::class, 'search'])->name('author.search');
 Route::get('author/getAuthorInfo', [AuthorController::class, 'getAuthorInfo'])->name('author.getAuthorInfo');
