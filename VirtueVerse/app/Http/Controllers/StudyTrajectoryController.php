@@ -69,7 +69,7 @@ class StudyTrajectoryController extends Controller
             'book_edition_id' => $request->input('book-edition-id')
         ]);
 
-        return redirect()->route('home')->with('success', 'Study trajectory created successfully');
+        return redirect('/')->with('success', 'Study trajectory created successfully');
     }
 
     /**

@@ -51,9 +51,6 @@ Route::middleware(['auth', 'can.edit.record'])->group(function () {
     Route::put('book/{id}', [BookController::class, 'update'])->name('book.update');
     Route::get('book-edition/edit/{id}', [BookEditionController::class, 'edit'])->name('book-edition.edit');
     Route::put('book-edition/{id}', [BookEditionController::class, 'update'])->name('book-edition.update');
-    Route::get('study-trajectory/catalogue/{id}', [StudyTrajectoryController::class, 'catalogue'])->name('study-trajectory.catalogue');
-    Route::get('/study-trajectory/{id}', [StudyTrajectoryController::class, 'show'])->name('study-trajectory.show');
-    Route::put('/study-trajectory/{id}/{active}', [StudyTrajectoryController::class, 'changeTrajectoryStatus'])->name('study-trajectory.changeTrajectoryStatus');
 });
 
 // Routes accessible for users with a user role
@@ -78,10 +75,15 @@ Route::middleware(['auth', 'auth.roles:Admin,Editor,User'])->group(function () {
     Route::get('book-edition/create', [BookEditionController::class, 'create'])->name('book-edition.create');
     Route::post('book-edition/store', [BookEditionController::class, 'store'])->name('book-edition.store')->middleware('web');
 
+    Route::get('study-trajectory/catalogue/{id}', [StudyTrajectoryController::class, 'catalogue'])->name('study-trajectory.catalogue');
     Route::get('study-entry/create/{study_trajectory_id}', [StudyEntryController::class, 'create'])->name('study-entry.create');
     Route::post('study-entry/store', [StudyEntryController::class,'store'])->name('study-entry.store')->middleware('web');
 });
 
+Route::middleware(['auth', 'can.edit.record'])->group(function () {
+    Route::get('/study-trajectory/{id}', [StudyTrajectoryController::class, 'show'])->name('study-trajectory.show');
+    Route::put('/study-trajectory/{id}/{active}', [StudyTrajectoryController::class, 'changeTrajectoryStatus'])->name('study-trajectory.changeTrajectoryStatus');    
+});
 
 // Routes for registration
 require __DIR__.'/auth.php';
