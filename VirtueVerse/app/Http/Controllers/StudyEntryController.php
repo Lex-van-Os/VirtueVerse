@@ -92,4 +92,15 @@ class StudyEntryController extends Controller
         $notesEntry->date = $data['date'];
         $notesEntry->save();
     }
+
+    public function getReadPagesByStudyTrajectory($studyTrajectoryId) 
+    {
+        $studyTrajectory = StudyTrajectory::with('pagesEntries')->find($studyTrajectoryId);
+
+        if ($studyTrajectory) {
+            return $studyTrajectory->pagesEntries;
+        }
+    
+        return [];
+    }
 }
