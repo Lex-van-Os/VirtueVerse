@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Observers\PagesEntryObserver;
+use App\Observers\ReadMinutesEntryObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PagesEntry extends Model
+class ReadMinutesEntry extends Model
 {
-    protected $table = "pages_entries";
+    protected $table = "read_minutes_entries";
 
     protected $fillable = [
         'study_entry_id',
@@ -19,7 +19,7 @@ class PagesEntry extends Model
     /**
      * The "booting" method of the model.
      *
-     * This method is called when the model is bootstrapped, and it registers the PagesEntryObserver.
+     * This method is called when the model is bootstrapped, and it registers the ReadMinutesEntryObserver.
      *
      * @return void
      */
@@ -27,13 +27,13 @@ class PagesEntry extends Model
     {
         parent::boot();
     
-        PagesEntry::observe(PagesEntryObserver::class);
+        ReadMinutesEntry::observe(ReadMinutesEntryObserver::class);
     }
 
     /**
      * Define a many-to-one relationship with the StudyEntry model.
      *
-     * This method defines a relationship where a pages entry belongs to a single study entry.
+     * This method defines a relationship where a read minutes entry belongs to a single study entry.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

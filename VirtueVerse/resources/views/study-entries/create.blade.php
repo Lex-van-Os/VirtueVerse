@@ -22,7 +22,8 @@
     {{-- notes --}}
     {{-- date --}}
     <x-forms.text-input type="date" id="date" label="Reading date" name="date" placeholder="Reading date" value="{{ old('date') }}" />
-    <x-forms.text-input type="number" id="read-pages" label="Read pages" name="read-pages" placeholder="Read pages" value="{{ old('read-pages') }}" /> 
+    <x-forms.text-input type="number" id="read-pages" label="Read pages" name="read-pages" placeholder="Read pages" value="{{ old('read-pages') }}" />
+    <x-forms.text-input type="time" id="reading-time" label="Total reading time" name="reading-time" placeholder="Total reading time" value="{{ old('reading-time') }}" />  
     <x-forms.text-input type="text" id="notes" label="Notes" name="notes" placeholder="Notes" value="{{ old('notes') }}" />
 
     <input type="hidden" name="study-trajectory-id" id="study-trajectory-id" value="{{ $study_trajectory_id }}">
