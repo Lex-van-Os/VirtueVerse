@@ -2,24 +2,24 @@
 
 namespace App\Models;
 
-use App\Observers\PagesEntryObserver;
+use App\Observers\NotesEntryObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PagesEntry extends Model
+class NotesEntry extends Model
 {
-    protected $table = "pages_entries";
+    protected $table = "notes_entries";
 
     protected $fillable = [
         'study_entry_id',
-        'read_pages',
+        'notes',
         'date'
     ];
     
     /**
      * The "booting" method of the model.
      *
-     * This method is called when the model is bootstrapped, and it registers the PagesEntryObserver.
+     * This method is called when the model is bootstrapped, and it registers the NotesEntryObserver.
      *
      * @return void
      */
@@ -27,13 +27,13 @@ class PagesEntry extends Model
     {
         parent::boot();
     
-        PagesEntry::observe(PagesEntryObserver::class);
+        NotesEntry::observe(NotesEntryObserver::class);
     }
 
     /**
      * Define a many-to-one relationship with the StudyEntry model.
      *
-     * This method defines a relationship where a pages entry belongs to a single study entry.
+     * This method defines a relationship where a notes entry belongs to a single study entry.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
