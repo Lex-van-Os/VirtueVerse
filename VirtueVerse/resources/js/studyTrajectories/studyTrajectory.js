@@ -5,6 +5,10 @@ import { spaceEncoder } from "../shared/regexHelper";
 
 Chart.register(...registerables);
 
+let studyTrajectoryId = parseInt(
+    document.getElementById("study-trajectory-id").value
+);
+
 export function setBookEditionId(bookEditionId) {
     document.getElementById("book-edition-id").value = bookEditionId;
 }
@@ -13,12 +17,13 @@ document.addEventListener("DOMContentLoaded", function () {
     createReadPagesChart();
 });
 
-async function retrieveReadPagesChartData() {
+async function retrieveReadPagesChartData(studyTrajectoryId) {
     try {
-        query = spaceEncoder(query);
-        const response = await axios.get(`/book/search?query=${query}`);
+        const response = await axios.get(
+            `/charts/retrieveReadPagesChartData/${studyTrajectoryId}`
+        );
 
-        const results = response.data.results.docs;
+        const results = response.data;
         console.log(results);
 
         return results;
@@ -30,14 +35,23 @@ async function retrieveReadPagesChartData() {
 }
 
 async function createReadPagesChart() {
+    console.log("createReadPagesChart");
     const readPagesChart = document.getElementById("readpagesChart");
 
-    chartData = {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    var readPagesChartData = await retrieveReadPagesChartData(
+        studyTrajectoryId
+    );
+
+    const labels = readPagesChartData.chartData.map((entry) => entry.date);
+    const data = readPagesChartData.chartData.map((entry) => entry.read_pages);
+
+
+    var chartData = {
+        labels: labels,
         datasets: [
             {
-                label: "# of Votes",
-                data: [12, 19, 3, 5, 2, 3],
+                label: "Read pages",
+                data: data,
                 borderWidth: 1,
             },
         ],
@@ -50,6 +64,7 @@ async function createReadPagesChart() {
             scales: {
                 y: {
                     beginAtZero: true,
+                    suggestedMax: readPagesChartData.totalPages,
                 },
             },
         },

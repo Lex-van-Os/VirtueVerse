@@ -43,6 +43,7 @@
 </div>
 
 <div class="trajectory-charts">
+    <input type="hidden" id="study-trajectory-id" value="{{ $studyTrajectory->id }}">
     <h1>Chart data</h1>
 
     <div>

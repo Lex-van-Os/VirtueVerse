@@ -64,6 +64,6 @@ class StudyTrajectory extends Model
     
     public function pagesEntries()
     {
-        return $this->hasMany(PagesEntry::class, 'study_entry_id');
+        return $this->hasManyThrough(PagesEntry::class, StudyEntry::class);
     }
 }

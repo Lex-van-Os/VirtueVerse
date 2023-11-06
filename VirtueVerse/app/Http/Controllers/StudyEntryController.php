@@ -6,6 +6,7 @@ use App\Models\NotesEntry;
 use App\Models\ReadMinutesEntry;
 use App\Models\StudyEntry;
 use App\Models\PagesEntry;
+use App\Models\StudyTrajectory;
 use App\Http\Controllers\Controller;
 use App\Rules\StudyEntryFilledFieldRule;
 use Illuminate\Http\Request;

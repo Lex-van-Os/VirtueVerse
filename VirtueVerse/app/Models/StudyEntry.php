@@ -42,7 +42,7 @@ class StudyEntry extends Model
 
     public function pagesEntry()
     {
-        return $this->hasOne(PagesEntry::class, 'study_entry_id');
+        return $this->hasOne(PagesEntry::class);
     }
 
     use HasFactory;
