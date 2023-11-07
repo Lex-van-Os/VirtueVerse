@@ -49,6 +49,8 @@
     <div>
         <canvas id="readPagesChart"></canvas>
         <canvas id="pagesByMonthChart"></canvas>
+        <canvas id="readingSpeedChart"></canvas>
+        <canvas id="inputtedRecordsChart"></canvas>
     </div>      
 </div>
 @endsection

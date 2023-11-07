@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\StudyEntry;
+use App\Models\PagesEntry;
+use App\Models\NotesEntry;
+use App\Models\ReadMinutesEntry;
 use App\Models\StudyTrajectory;
 use App\Models\Book;
 use Carbon\Carbon;
@@ -90,6 +93,64 @@ class StudyTrajectoryChartController extends Controller
         {
             return response()->json([]);
         }
+    }
+
+    public function retrieveInputtedRecordsChartdata($studyTrajectoryId)
+    {
+        $pagesEntryCount = PagesEntry::whereHas('studyEntry', function ($query) use ($studyTrajectoryId) {
+            $query->where('study_trajectory_id', $studyTrajectoryId);
+        })->count();
+    
+        $notesEntryCount = NotesEntry::whereHas('studyEntry', function ($query) use ($studyTrajectoryId) {
+            $query->where('study_trajectory_id', $studyTrajectoryId);
+        })->count();
+    
+        $readMinutesEntryCount = ReadMinutesEntry::whereHas('studyEntry', function ($query) use ($studyTrajectoryId) {
+            $query->where('study_trajectory_id', $studyTrajectoryId);
+        })->count();
+    
+        return [
+            'pagesEntryCount' => $pagesEntryCount,
+            'notesEntryCount' => $notesEntryCount,
+            'readMinutesEntryCount' => $readMinutesEntryCount,
+        ];
+    }
+
+    public function retrieveReadingSpeedChartData($studyTrajectoryId)
+    {
+        $studyEntries = StudyEntry::with('pagesEntry', 'readMinutesEntry')
+            ->where('study_trajectory_id', $studyTrajectoryId)
+            ->get();
+
+        if ($studyEntries->isEmpty()) {
+            return response()->json(['message' => 'No StudyEntries found for this StudyTrajectory'], 404);
+        }
+
+        $correlations = [];
+
+        foreach ($studyEntries as $studyEntry) {
+            $pagesEntry = $studyEntry->pagesEntry;
+            $readMinutesEntry = $studyEntry->readMinutesEntry;
+
+            $correlation = null;
+            if ($pagesEntry && $readMinutesEntry) {
+                Log::info($pagesEntry);
+                Log::info($readMinutesEntry);
+                $readPages = $pagesEntry->read_pages;
+                $readMinutes = $readMinutesEntry->read_minutes;
+
+                if ($readPages > 0 && $readMinutes > 0) {
+                    $correlation = $readPages / $readMinutes;
+                }
+
+                $correlations[] = [
+                    'correlation' => $correlation,
+                ];
+            }
+
+        }
+
+        return response()->json(['correlations' => $correlations]);
     }
 
     public function retrieveCumulativeReadPages($studyTrajectoryId)

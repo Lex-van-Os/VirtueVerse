@@ -16,7 +16,41 @@ export function setBookEditionId(bookEditionId) {
 document.addEventListener("DOMContentLoaded", function () {
     createReadPagesChart();
     createPagesPerMonthChart();
+    createInputtedRecordsChart();
+    createReadingSpeedChart();
 });
+
+async function retrieveReadingSpeedChartData(studyTrajectoryId) {
+    try {
+        const response = await axios.get(
+            `/charts/retrieveReadingSpeedChartData/${studyTrajectoryId}`
+        );
+
+        const results = response.data;
+
+        return results;
+    } catch (error) {
+        console.log("Failed sending request");
+        console.log(error.response);
+        throw error; // Rethrow the error to handle it in the calling function
+    }
+}
+
+async function retrieveInputtedRecordsChartData(studyTrajectoryId) {
+    try {
+        const response = await axios.get(
+            `/charts/retrieveInputtedRecordsChartdata/${studyTrajectoryId}`
+        );
+
+        const results = response.data;
+
+        return results;
+    } catch (error) {
+        console.log("Failed sending request");
+        console.log(error.response);
+        throw error; // Rethrow the error to handle it in the calling function
+    }
+}
 
 async function retrievePagesPerMonthChartData(studyTrajectoryId) {
     try {
@@ -118,4 +152,50 @@ async function createPagesPerMonthChart() {
             },
         },
     });
+}
+
+async function createInputtedRecordsChart() {
+    const inputtedRecordsChart = document.getElementById(
+        "inputtedRecordsChart"
+    );
+
+    let inputtedRecordsData = await retrieveInputtedRecordsChartData(
+        studyTrajectoryId
+    );
+
+    let pagesData = inputtedRecordsData["pagesEntryCount"];
+    let notesData = inputtedRecordsData["notesEntryCount"];
+    let readMinutesData = inputtedRecordsData["readMinutesEntryCount"];
+
+    const data = {
+        labels: ["Red", "Blue", "Yellow"],
+        datasets: [
+            {
+                label: "Total inputted study entries",
+                data: [pagesData, notesData, readMinutesData],
+                backgroundColor: [
+                    "rgb(255, 99, 132)",
+                    "rgb(54, 162, 235)",
+                    "rgb(255, 205, 86)",
+                ],
+                hoverOffset: 4,
+            },
+        ],
+    };
+
+    new Chart(inputtedRecordsChart, {
+        type: "doughnut",
+        data: data,
+    });
+}
+
+async function createReadingSpeedChart() {
+    const readingSpeedChart = document.getElementById(
+        "readingSpeedChart"
+    );
+
+    let readingSpeedData = await retrieveReadingSpeedChartData(studyTrajectoryId);
+
+    debugger;
+
 }

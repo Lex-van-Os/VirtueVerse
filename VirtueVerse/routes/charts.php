@@ -14,3 +14,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('charts/retrieveReadPagesChartData/{studyTrajectoryId}', [StudyTrajectoryChartController::class, 'retrieveReadPagesChartData'])->name('study-trajectory.retrieveReadPagesChartData');
 Route::get('charts/retrievePagesPerMonthChartData/{studyTrajectoryId}', [StudyTrajectoryChartController::class, 'retrievePagesPerMonthChartData'])->name('study-trajectory.retrievePagesPerMonthChartData');
+Route::get('charts/retrieveInputtedRecordsChartdata/{studyTrajectoryId}', [StudyTrajectoryChartController::class, 'retrieveInputtedRecordsChartdata'])->name('study-trajectory.retrieveInputtedRecordsChartdata');
+Route::get('charts/retrieveReadingSpeedChartData/{studyTrajectoryId}', [StudyTrajectoryChartController::class, 'retrieveReadingSpeedChartData'])->name('study-trajectory.retrieveReadingSpeedChartData');

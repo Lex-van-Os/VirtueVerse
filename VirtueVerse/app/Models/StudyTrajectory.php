@@ -66,4 +66,9 @@ class StudyTrajectory extends Model
     {
         return $this->hasManyThrough(PagesEntry::class, StudyEntry::class);
     }
+
+    public function readMinutesEntries()
+    {
+        return $this->hasManyThrough(ReadMinutesEntry::class, StudyEntry::class);
+    }
 }

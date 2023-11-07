@@ -45,5 +45,10 @@ class StudyEntry extends Model
         return $this->hasOne(PagesEntry::class);
     }
 
+    public function readMinutesEntry()
+    {
+        return $this->hasOne(ReadMinutesEntry::class);
+    }
+
     use HasFactory;
 }
