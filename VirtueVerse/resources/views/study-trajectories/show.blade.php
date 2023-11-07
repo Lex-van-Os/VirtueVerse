@@ -47,7 +47,8 @@
     <h1>Chart data</h1>
 
     <div>
-        <canvas id="readpagesChart"></canvas>
+        <canvas id="readPagesChart"></canvas>
+        <canvas id="pagesByMonthChart"></canvas>
     </div>      
 </div>
 @endsection

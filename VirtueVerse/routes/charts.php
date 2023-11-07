@@ -12,4 +12,5 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\StudyTrajectoryChartController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('charts/retrieveReadPagesChartData/{studyTrajectoryId}', [StudyTrajectoryChartController::class, 'retrieveReadPagesChartData'])->name('book.retrieveReadPagesChartData');
+Route::get('charts/retrieveReadPagesChartData/{studyTrajectoryId}', [StudyTrajectoryChartController::class, 'retrieveReadPagesChartData'])->name('study-trajectory.retrieveReadPagesChartData');
+Route::get('charts/retrievePagesPerMonthChartData/{studyTrajectoryId}', [StudyTrajectoryChartController::class, 'retrievePagesPerMonthChartData'])->name('study-trajectory.retrievePagesPerMonthChartData');

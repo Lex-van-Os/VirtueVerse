@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\StudyEntry;
 use App\Models\StudyTrajectory;
 use App\Models\Book;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class StudyTrajectoryChartController extends Controller
@@ -63,5 +64,36 @@ class StudyTrajectoryChartController extends Controller
         {
             return response()->json([]);
         }
+    }
+
+    public function retrievePagesPerMonthChartData($studyTrajectoryId)
+    {
+        $studyTrajectory = StudyTrajectory::with(['pagesEntries', 'bookEdition'])->find($studyTrajectoryId);
+        $monthlyData = null;
+
+        if ($studyTrajectory) 
+        {
+            $pagesEntries = $studyTrajectory->pagesEntries;
+
+            $monthlyData = $pagesEntries->groupBy(function ($entry) {
+                return Carbon::parse($entry->date)->format('F Y');
+            })->map(function ($group) {
+                return $group->sum('read_pages');
+            });
+        }
+
+        if ($monthlyData) 
+        {
+            return response()->json($monthlyData);
+        } 
+        else 
+        {
+            return response()->json([]);
+        }
+    }
+
+    public function retrieveCumulativeReadPages($studyTrajectoryId)
+    {
+
     }
 }
