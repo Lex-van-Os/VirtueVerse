@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\BookEditionController;
+use App\Http\Controllers\HelperController;
 use App\Http\Controllers\StudyEntryController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
@@ -29,6 +30,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('helper/getCsrfToken', [HelperController::class, 'getCsrfToken'])->name('author.getCsrfToken');
 
 // Routes only accessible for admins
 Route::middleware(['auth', 'auth.roles:Admin'])->group(function () {
@@ -83,6 +85,7 @@ Route::middleware(['auth', 'auth.roles:Admin,Editor,User'])->group(function () {
 
 // Routes for registration
 require __DIR__.'/auth.php';
+require __DIR__.'/charts.php';
 
 Route::get('book/catalogue', [BookController::class, 'catalogue'])->name('book.catalogue');
 Route::get('/book/search', [BookController::class, 'search'])->name('book.search');

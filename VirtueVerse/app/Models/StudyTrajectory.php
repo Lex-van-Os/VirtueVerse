@@ -56,4 +56,19 @@ class StudyTrajectory extends Model
     {
         return $this->belongsTo(BookEdition::class, 'book_edition_id');
     }
+
+    public function studyEntries()
+    {
+        return $this->hasMany(StudyEntry::class);
+    }
+    
+    public function pagesEntries()
+    {
+        return $this->hasManyThrough(PagesEntry::class, StudyEntry::class);
+    }
+
+    public function readMinutesEntries()
+    {
+        return $this->hasManyThrough(ReadMinutesEntry::class, StudyEntry::class);
+    }
 }

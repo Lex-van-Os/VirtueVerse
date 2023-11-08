@@ -4,6 +4,7 @@
 <head>
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
+    @vite('resources/js/studyTrajectories/studyTrajectory.js')
     @vite('resources/js/shared/regexHelper.js')
 </head>
 
@@ -39,5 +40,17 @@
         <h1 class="text-4xl font-semibold mb-1">{{ $studyTrajectory->title }}</h1>
         <p class="mt-2">{{ $studyTrajectory->description }}</p>
     </div>
+</div>
+
+<div class="trajectory-charts">
+    <input type="hidden" id="study-trajectory-id" value="{{ $studyTrajectory->id }}">
+    <h1>Chart data</h1>
+
+    <div>
+        <canvas id="readPagesChart"></canvas>
+        <canvas id="pagesByMonthChart"></canvas>
+        <canvas id="readingSpeedChart"></canvas>
+        <canvas id="inputtedRecordsChart"></canvas>
+    </div>      
 </div>
 @endsection

@@ -6,6 +6,7 @@ use App\Models\NotesEntry;
 use App\Models\ReadMinutesEntry;
 use App\Models\StudyEntry;
 use App\Models\PagesEntry;
+use App\Models\StudyTrajectory;
 use App\Http\Controllers\Controller;
 use App\Rules\StudyEntryFilledFieldRule;
 use Illuminate\Http\Request;
@@ -91,5 +92,16 @@ class StudyEntryController extends Controller
         $notesEntry->notes = $data['notes'];
         $notesEntry->date = $data['date'];
         $notesEntry->save();
+    }
+
+    public function getReadPagesByStudyTrajectory($studyTrajectoryId) 
+    {
+        $studyTrajectory = StudyTrajectory::with('pagesEntries')->find($studyTrajectoryId);
+
+        if ($studyTrajectory) {
+            return $studyTrajectory->pagesEntries;
+        }
+    
+        return [];
     }
 }
