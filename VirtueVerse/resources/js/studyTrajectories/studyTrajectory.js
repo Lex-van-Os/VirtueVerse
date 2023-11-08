@@ -190,12 +190,38 @@ async function createInputtedRecordsChart() {
 }
 
 async function createReadingSpeedChart() {
-    const readingSpeedChart = document.getElementById(
-        "readingSpeedChart"
+    const readingSpeedChart = document.getElementById("readingSpeedChart");
+
+    let readingSpeedData = await retrieveReadingSpeedChartData(
+        studyTrajectoryId
     );
 
-    let readingSpeedData = await retrieveReadingSpeedChartData(studyTrajectoryId);
+    const labels = readingSpeedData.correlations.map((entry) => entry.date);
+    const correlations = readingSpeedData.correlations.map(
+        (entry) => entry.correlation
+    );
 
-    debugger;
+    var chartData = {
+        labels: labels,
+        datasets: [
+            {
+                label: "Reading speed correlation per entry",
+                data: correlations,
+                borderWidth: 1,
+            },
+        ],
+    };
 
+    new Chart(readingSpeedChart, {
+        type: "line",
+        data: chartData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    suggestedMax: readingSpeedData.highestValue + 1,
+                },
+            },
+        },
+    });
 }

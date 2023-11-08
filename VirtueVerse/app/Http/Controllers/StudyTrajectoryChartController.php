@@ -127,6 +127,7 @@ class StudyTrajectoryChartController extends Controller
         }
 
         $correlations = [];
+        $highestValue = 0;
 
         foreach ($studyEntries as $studyEntry) {
             $pagesEntry = $studyEntry->pagesEntry;
@@ -134,23 +135,31 @@ class StudyTrajectoryChartController extends Controller
 
             $correlation = null;
             if ($pagesEntry && $readMinutesEntry) {
-                Log::info($pagesEntry);
-                Log::info($readMinutesEntry);
                 $readPages = $pagesEntry->read_pages;
                 $readMinutes = $readMinutesEntry->read_minutes;
 
                 if ($readPages > 0 && $readMinutes > 0) {
                     $correlation = $readPages / $readMinutes;
-                }
+                    $dateEntry = date("d-m-Y", strtotime($pagesEntry->date));
 
-                $correlations[] = [
-                    'correlation' => $correlation,
-                ];
+                    if ($correlation > $highestValue) 
+                    {
+                        $highestValue = $correlation;
+                    }
+
+                    $correlations[] = [
+                        'correlation' => $correlation,
+                        'date' => $dateEntry
+                    ];
+                }
             }
 
         }
-
-        return response()->json(['correlations' => $correlations]);
+        
+        return response()->json([
+            'correlations' => $correlations,
+            'highestValue' => $highestValue
+        ]);
     }
 
     public function retrieveCumulativeReadPages($studyTrajectoryId)
