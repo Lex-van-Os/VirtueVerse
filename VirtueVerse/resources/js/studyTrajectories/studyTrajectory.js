@@ -2,6 +2,7 @@ import $ from "jquery";
 import axios from "axios";
 import { Chart, LinearScale, registerables } from "chart.js";
 import { spaceEncoder } from "../shared/regexHelper";
+import { handleError } from "../shared/handlerHelper";
 
 Chart.register(...registerables);
 
@@ -30,9 +31,7 @@ async function retrieveReadingSpeedChartData(studyTrajectoryId) {
 
         return results;
     } catch (error) {
-        console.log("Failed sending request");
-        console.log(error.response);
-        throw error; // Rethrow the error to handle it in the calling function
+        await handleError(error);
     }
 }
 
@@ -46,9 +45,7 @@ async function retrieveInputtedRecordsChartData(studyTrajectoryId) {
 
         return results;
     } catch (error) {
-        console.log("Failed sending request");
-        console.log(error.response);
-        throw error; // Rethrow the error to handle it in the calling function
+        await handleError(error);
     }
 }
 
@@ -62,9 +59,7 @@ async function retrievePagesPerMonthChartData(studyTrajectoryId) {
 
         return results;
     } catch (error) {
-        console.log("Failed sending request");
-        console.log(error.response);
-        throw error; // Rethrow the error to handle it in the calling function
+        await handleError(error);
     }
 }
 
@@ -78,9 +73,7 @@ async function retrieveReadPagesChartData(studyTrajectoryId) {
 
         return results;
     } catch (error) {
-        console.log("Failed sending request");
-        console.log(error.response);
-        throw error; // Rethrow the error to handle it in the calling function
+        await handleError(error);
     }
 }
 
