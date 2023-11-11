@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BookEdition;
+use App\Models\StudyEntry;
 use Illuminate\Http\Request;
 use App\Models\StudyTrajectory;
 use Illuminate\Support\Facades\Http;
@@ -30,9 +31,11 @@ class StudyTrajectoryController extends Controller
      */
     public function show($studyTrajectoryId) 
     {
-        $studyTrajectory = StudyTrajectory::with('bookEdition')->findOrFail($studyTrajectoryId);
+        $studyTrajectory = StudyTrajectory::with(['bookEdition', 'pagesEntries', 'readMinutesEntries', 'notesEntries'])->findOrFail($studyTrajectoryId);
+        $totalStudyEntries = $studyTrajectory->studyEntries->count();
+        Log::info($studyTrajectory);
 
-        return view('study-trajectories.show', compact('studyTrajectory'));
+        return view('study-trajectories.show', compact('studyTrajectory', 'totalStudyEntries'));
     }
 
     /**
@@ -88,6 +91,11 @@ class StudyTrajectoryController extends Controller
         $studyTrajectory = StudyTrajectory::with('bookEdition')->findOrFail($id);
     
         return view('study-trajectories.show', compact('studyTrajectory'));
+    }
+
+    public function getStudyTrajectoryEntries() 
+    {
+
     }
 }
 
