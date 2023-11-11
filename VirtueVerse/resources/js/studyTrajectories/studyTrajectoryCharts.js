@@ -114,6 +114,8 @@ async function createReadPagesChart() {
                     suggestedMax: readPagesChartData.totalPages,
                 },
             },
+            maintainAspectRatio: false,
+            responsive: true,
         },
     });
 }
@@ -149,6 +151,8 @@ async function createPagesPerMonthChart() {
                     beginAtZero: true,
                 },
             },
+            maintainAspectRatio: false,
+            responsive: true,
         },
     });
 }
@@ -185,6 +189,10 @@ async function createInputtedRecordsChart() {
     new Chart(inputtedRecordsChart, {
         type: "doughnut",
         data: data,
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+        },
     });
 }
 
@@ -221,6 +229,8 @@ async function createReadingSpeedChart() {
                     suggestedMax: readingSpeedData.highestValue + 1,
                 },
             },
+            maintainAspectRatio: false,
+            responsive: true,
         },
     });
 }
