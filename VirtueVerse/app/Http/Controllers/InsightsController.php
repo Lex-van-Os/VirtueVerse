@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\StudyTrajectory;
 use App\Services\InsightsApiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class InsightsController extends Controller
 {
-    public function retrieveBookRecommendations(Request $request)
+    public function retrieveBookRecommendations($studyTrajectoryId)
     {
         $insightsService = new InsightsApiService();
+
+        $studyTrajectory = StudyTrajectory::with(['bookEdition', 'pagesEntries', 'readMinutesEntries', 'notesEntries'])->findOrFail($studyTrajectoryId);
 
         $bookRecommendationsData = $insightsService->getBookRecommendations();
 
