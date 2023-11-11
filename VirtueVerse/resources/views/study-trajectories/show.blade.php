@@ -5,6 +5,7 @@
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
     @vite('resources/js/studyTrajectories/studyTrajectory.js')
+    @vite('resources/js/studyTrajectories/studyTrajectoryCharts.js')
     @vite('resources/js/shared/regexHelper.js')
 </head>
 

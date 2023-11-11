@@ -8,6 +8,7 @@
     <title>Laravel</title>
 
     @vite('resources/css/app.css')
+    @vite('resources/js/home/home.js')
 </head>
 <h1 class="text-3xl font-bold underline">
     Hello world!
