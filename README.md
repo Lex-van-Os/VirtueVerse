@@ -28,6 +28,19 @@ https://openlibrary.org/authors/OL31574A.json
 *Searching through author records*
 https://openlibrary.org/search/authors.json?q=C.S.Lewis&limit=10
 
+### VirtueVerse Insights API
+For extra functionality through machine learning actions (recommendations, trends, expected data), VirtueVerse makes use of the VirtueVerse Insights API. VirtueVerse Insights is a seperate Python project, that uses necessary data from VirtueVerse to perform machine learning actions. The functionality provided is not necessary for the functioning of the VirtueVerse application itself, but serves as an added layer of personalisation.
+
+#### Examples
+*Retrieval of expected completion time of a study trajectory*
+http://127.0.0.1:5000/insightsApi/expectedCompletionTime
+
+*Retrieval of popular books*
+http://127.0.0.1:5000/insightsApi/popularBooks
+
+*Retrieval of book recommendations*
+http://127.0.0.1:5000/insightsApi/bookRecommendations
+
 ### Books
 
 #### Description
